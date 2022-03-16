@@ -1,9 +1,6 @@
 {
-  "name": "technics_park_service",
+  "name": "course_project",
   "version": "1.0.0",
-  "engines": {
-    "node": "14.17.6"
-  },
   "description": "",
   "main": "application.js",
   "dependencies": {
@@ -19,12 +16,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TehanovAnton/PSKP_3k_2s.git"
+    "url": "git+https://github.com/TehanovAnton/3k_2s_course_project.git"
   },
   "author": "tehaonvanton <tehaonvanton@gmail>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/TehanovAnton/PSKP_3k_2s/issues"
+    "url": "https://github.com/TehanovAnton/3k_2s_course_project/issues"
   },
-  "homepage": "https://github.com/TehanovAnton/PSKP_3k_2s#readme"
+  "homepage": "https://github.com/TehanovAnton/3k_2s_course_project#readme"
 }
