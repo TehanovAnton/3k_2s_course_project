@@ -1,0 +1,30 @@
+{
+  "name": "technics_park_service",
+  "version": "1.0.0",
+  "engines": {
+    "node": "14.17.6"
+  },
+  "description": "",
+  "main": "application.js",
+  "dependencies": {
+    "express": "^4.17.3",
+    "express-handlebars": "^6.0.3",
+    "handlebars": "^4.7.7",
+    "sequelize": "^6.17.0",
+    "tedious": "^14.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TehanovAnton/PSKP_3k_2s.git"
+  },
+  "author": "tehaonvanton <tehaonvanton@gmail>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TehanovAnton/PSKP_3k_2s/issues"
+  },
+  "homepage": "https://github.com/TehanovAnton/PSKP_3k_2s#readme"
+}
