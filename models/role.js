@@ -1,17 +1,23 @@
-const { sequelize } = require('../db/database');
-const { Model, Sequelize } = require('../initializers/sequelize');
-
-class Role extends Model {};
-
-function initialize(sequelize)
-{
-    Role.init(
-        { title: { type:Sequelize.STRING, allowNull:false, unique:true } },
-        { sequelize, modelName:'Role', tableName:'roles', timestamps: false }
-    )
-}
-
-module.exports.Role = () => { 
-    initialize(sequelize);
-    return Role
-} 
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Role extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+    }
+  }
+  Role.init({
+    title: DataTypes.STRING
+  }, {
+    sequelize,
+    modelName: 'Role',
+  });
+  return Role;
+};

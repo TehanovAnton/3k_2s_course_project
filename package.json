@@ -7,10 +7,14 @@
     "express": "^4.17.3",
     "express-handlebars": "^6.0.3",
     "handlebars": "^4.7.7",
+    "pg": "^8.7.3",
+    "pg-hstore": "^2.3.4",
     "sequelize": "^6.17.0",
     "tedious": "^14.3.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "sequelize-cli": "^6.4.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

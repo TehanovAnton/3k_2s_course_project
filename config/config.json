@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "ewqcxzxsw123",
+    "database": "TechnicsParkService_development",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "ewqcxzxsw123",
+    "database": "TechnicsParkService_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "ewqcxzxsw123",
+    "database": "TechnicsParkService_production",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
