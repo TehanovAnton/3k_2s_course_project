@@ -1,29 +1,26 @@
-const { sequelize } = require('../db/database');
-const { Model, Sequelize } = require('../initializers/sequelize');
-
-class User extends Model {};
-
-function initialize(sequelize, roleModel)
-{
-    User.init(
-        { 
-            nickname: { type:Sequelize.STRING, allowNull:false },
-            email: { type:Sequelize.STRING, allowNull:false, unique: true },
-            password: { type:Sequelize.STRING, allowNull:false },
-            role_id: { 
-                type:Sequelize.BIGINT, allowNull:false,
-                references:{ model:roleModel, key:'id' }
-            }
-        },
-        { sequelize, modelName:'User', tableName:'users', timestamps: false }
-    );
-
-    roleModel.hasMany(User, { as:'users', foreignKey:'id', onDelete:'cascade' })
-    User.belongsTo(roleModel, { foreignKey: 'id' });
-}
-
-module.exports.User = () => { 
-    let Role = require('./role').Role();
-    initialize(sequelize, Role);
-    return User
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class User extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+    }
+  }
+  User.init({
+    nickname: DataTypes.STRING,
+    email: DataTypes.STRING,
+    password: DataTypes.STRING,
+    role_id: DataTypes.INTEGER
+  }, {
+    sequelize,
+    modelName: 'User',
+  });
+  return User;
 };
