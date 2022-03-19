@@ -1,5 +1,5 @@
-
-const User = require('../models/user').User()
+const { sequelize, DataTypes } = require('../db/database');
+const User = require('../models/user')(sequelize, DataTypes);
 
 const userService = {
     userAttributes: Object.keys(User.getAttributes()),

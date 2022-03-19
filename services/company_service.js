@@ -1,5 +1,7 @@
 
-const Company = require('../models/company').Company();
+const { sequelize, DataTypes } = require('../db/database');
+const Company = require('../models/company')(sequelize, DataTypes);
+
 
 const companyService = {
     userAttributes: Object.keys(Company.getAttributes()),

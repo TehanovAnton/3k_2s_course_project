@@ -1,4 +1,6 @@
-const Role = require('../models/role').Role();
+const { sequelize, DataTypes } = require('../db/database');
+const Role = require('../models/role')(sequelize, DataTypes);
+
 const rolesRouter = require('express').Router();
 
 rolesRouter.get('/roles', async (req, res) => {

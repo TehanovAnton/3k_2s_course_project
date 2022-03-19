@@ -1,5 +1,7 @@
 
-const Park = require('../models/park').Park();
+const { sequelize, DataTypes } = require('../db/database');
+const Park = require('../models/park')(sequelize, DataTypes);
+
 const  Service = require('../services/service').Service(Park);
 const parksRouter = require('express').Router();
 
