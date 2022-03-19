@@ -1,5 +1,8 @@
 const express = require('express');
 const application = express();
+
+module.exports = { express, application }
+
 const hbs = require('./handlebars').hbs;
 
 const rolesRouter = require('../controllers/roles_controller');
@@ -18,5 +21,3 @@ application.use(rolesRouter);
 application.use(usersRouter);
 application.use(companiesRouter);
 application.use(parksRouter);
-
-module.exports = { express, application }
