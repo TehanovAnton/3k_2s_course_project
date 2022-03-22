@@ -1,0 +1,27 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "ewqcxzxsw123",
+    "database": "TechnicsParkService_development",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "ewqcxzxsw123",
+    "database": "TechnicsParkService_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "url":"postgres://tehacaokbimstp:be7ea70fb0a5f5c2eb027fa81b2991324caeb9dbf85b40b30c2af98d05815000@ec2-54-159-35-35.compute-1.amazonaws.com:5432/dde2mamiqdguu7",
+    "dialect": "postgres",
+    "ssl": true,
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
+  }
+}

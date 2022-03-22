@@ -1,0 +1,10 @@
+<h1>Companies</h1>
+<div>
+    <ul>
+        {{#each companies}}
+            <li>
+                <a href={{companiesEditPath this.id ../activate}}>{{this.name}}: {{this.email}}</a>
+            </li>
+        {{/each}}
+    </ul>
+</div>
