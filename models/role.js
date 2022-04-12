@@ -3,6 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
+  debugger
   class Role extends Model {
     /**
      * Helper method for defining associations.
