@@ -2,10 +2,12 @@
 const { userService, User } = require('../services/user_service');
 const usersRouter = require('express').Router();
 
+
 usersRouter.get('/users', async (req, res) => {
-    let users = await User.findAll();
+    let users = await User.findAll({ raw:true });
     res.json(users)
 })
+
 
 usersRouter.post('/users', async (req, res) => {
     let body = '';
@@ -25,6 +27,7 @@ usersRouter.post('/users', async (req, res) => {
     });
 })
 
+
 usersRouter.put('/users/:id', async (req, res) => {
     let body = '';
     let params = req.params;
@@ -41,6 +44,7 @@ usersRouter.put('/users/:id', async (req, res) => {
         else res.json('user not found or not updated')
     });
 })
+
 
 usersRouter.delete('/users/:id', async (req, res) => {
     let params = req.params;

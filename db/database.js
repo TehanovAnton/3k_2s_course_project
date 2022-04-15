@@ -2,10 +2,10 @@ const DB_NAME = 'TechnicsParkService_development'
 const USER_NAME = 'Anton'
 const USER_PASSWORD = 'ewqcxzxsw123'
 const { Sequelize, DataTypes } = require('sequelize');
-const application = require('../initializers/express').application;
+const { application } = require('../initializers/express');
 
 let sequelizeByEnv = () => {
-    if (application.settings.env == 'development') {
+    if (application.get('env') == 'development') {
         return new Sequelize(
             DB_NAME, USER_NAME, USER_PASSWORD,
             { 
@@ -14,7 +14,7 @@ let sequelizeByEnv = () => {
             }
         );
     }
-    else if (application.settings.env == 'production') {
+    else if (application.get('env') == 'production') {
         return new Sequelize(
             process.env.DATABASE_URL,
             { 
