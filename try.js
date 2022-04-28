@@ -12,4 +12,4 @@
 // func()
 
 const {application} = require('./initializers/express_config');
-console.log(application.get('env'));
+// console.log(application.get('env'));
