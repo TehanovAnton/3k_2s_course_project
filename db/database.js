@@ -1,6 +1,6 @@
 const DB_NAME = 'TechnicsParkService_development'
-const USER_NAME = 'Anton'
-const USER_PASSWORD = 'ewqcxzxsw123'
+const USER_NAME = 'postgres'
+const USER_PASSWORD = 'ewqqwe'
 const { Sequelize, DataTypes } = require('sequelize');
 const { application } = require('../initializers/express');
 

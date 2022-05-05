@@ -1,15 +1,16 @@
-// const DataTypes = require('sequelize').DataTypes;
-// const { sequelize } = require('./db/database');
+const DataTypes = require('sequelize').DataTypes;
+const { sequelize } = require('./db/database');
 
-// const Role = require('./models/role')(sequelize, DataTypes);
-// const User = require('./models/user')(sequelize, DataTypes);
+const Role = require('./models/role')(sequelize, DataTypes);
+const User = require('./models/user')(sequelize, DataTypes);
 
-// func = async () => {
-//     let users = await User.findAll({raw:true})
-//     console.log(users);
-// }
+User.associate({ role:Role })
 
-// func()
+func = async () => {
+    let user = await User.findOne({ include: 'role'})
+    console.log(user.role.title);
+}
 
-const {application} = require('./initializers/express_config');
+func()
+
 // console.log(application.get('env'));

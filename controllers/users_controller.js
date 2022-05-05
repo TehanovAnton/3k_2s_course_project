@@ -1,66 +1,84 @@
 
 const { userService, User } = require('../services/user_service');
+const { passport, authenticate } = require('../services/authentication_service')
+const { authorize } = require('../abilities/usersAbilies')
+const bodyParser = require('body-parser')()
 const usersRouter = require('express').Router();
 
 
-usersRouter.get('/users', async (req, res) => {
-    let users = await User.findAll({ raw:true });
-    res.json(users)
-})
+usersRouter.get('/users',
+    authenticate(),
+    authorize('readAll'),
+    
+    async (req, res) => {
+        let users = await User.findAll({ raw:true });
+        res.json(users)
+    }
+)
 
 
-usersRouter.post('/users', async (req, res) => {
-    let body = '';
+usersRouter.post('/users', bodyParser,
+    
+    async (req, res) => {
+        let body = req.body
 
-    req.on('data', chunk => { body += chunk. toString(); });
-    req.on('end', async () => {
-        let object = JSON.parse(body);
+        console.log(body);
 
         let user = await User.create({ 
-            nickname:object['nickname'],
-            email:object['email'],
-            password:object['password'],
-            role_id:object['role_id']
+            nickname:body.nickname,
+            email:body.email,
+            password:body.password,
+            role_id:body.role_id
         }).catch(error => { res.json(error) });
 
         res.json(user);        
-    });
-})
+    }
+)
 
 
-usersRouter.put('/users/:id', async (req, res) => {
-    let body = '';
-    let params = req.params;
+usersRouter.put('/users/:id', bodyParser,
+    authenticate(),
+    authorize('update'),
 
-    req.on('data', chunk => { body += chunk. toString(); });
-    req.on('end', async () => {
-        let updates = userService.updateAttributes(JSON.parse(body));        
+    async (req, res) => {
+        let body = req.body;
+        let params = req.params;
+
+        let updates = userService.updateAttributes(body);        
         let result = await User.update(
             updates, { where: { id:params['id']}, returning: true, plain: true}
         )
         .catch(error => { res.json(error) });
 
-        if(result[1]) res.json(result[1]);
-        else res.json('user not found or not updated')
-    });
-})
+        let updatedUser = result[1]
+        if(updatedUser)
+            res.json(updatedUser);
+        else 
+            res.json('user not found or not updated')
+    }
+)
 
 
-usersRouter.delete('/users/:id', async (req, res) => {
-    let params = req.params;
+usersRouter.delete('/users/:id', 
+    authenticate(),
+    authorize('delete'),
 
-    let user = await User.findByPk(params['id']);
-    let result = await User.destroy(
-        { 
-            where:{ id:params['id'] },
-            returning: true, 
-            plain: true
-        }
-    ).catch(error => { res.json(error) });
-    
-    if(result) res.json(user);
-    else res.json('user not found')
-})
+    async (req, res) => {
+        let params = req.params;
+
+        let user = await User.findByPk(params['id']);
+        let result = await User.destroy(
+            { 
+                where:{ id:params['id'] },
+                returning: true, 
+                plain: true
+            }
+        ).catch(error => { res.json(error) });
+        
+        if(result) res.json(user);
+        else res.json('user not found')
+    }
+)
 
 
 module.exports = usersRouter;
