@@ -5,6 +5,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Place extends Model {
     static associate(models) {
+      if (models.technicue) Place.belongsTo(models.technicue, { as: 'technique' });
     }
   }
   Place.init({

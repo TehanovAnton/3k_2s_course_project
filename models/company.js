@@ -1,7 +1,7 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Company extends Model {
     /**
@@ -10,17 +10,15 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      if (models['user'])
-        Company.belongsTo(models['user'], { as:'user' })
+      if (models.user) Company.belongsTo(models.user, { as: 'user' });
 
-      if (models['park'])
-        Company.hasMany(models['park'], { as:'parks' })
+      if (models.park) Company.hasMany(models.park, { as: 'parks' });
     }
   }
   Company.init({
     name: DataTypes.STRING,
     email: DataTypes.STRING,
-    userId: DataTypes.INTEGER
+    userId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Company',

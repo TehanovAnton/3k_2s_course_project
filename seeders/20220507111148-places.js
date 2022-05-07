@@ -7,7 +7,7 @@ module.exports = {
 
     return queryInterface.bulkInsert('Places', [{
       parkId: park.id,
-      techniqueId: technique.id,  
+      techniqueId: technique.id,
 
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -15,6 +15,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    return queryInterface.bulkDelete('Techniques', null, {});
+    return queryInterface.bulkDelete('Places', null, {});
   },
 };
