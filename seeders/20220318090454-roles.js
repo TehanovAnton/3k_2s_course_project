@@ -3,7 +3,7 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     return queryInterface.bulkInsert('Roles', [{
-      title: 'technique_owner',
+      title: 'technics_owner',
 
       createdAt: new Date(),
       updatedAt: new Date()

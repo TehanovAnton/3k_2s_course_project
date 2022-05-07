@@ -23,7 +23,7 @@ module.exports = {
         unique: true,
         alowNull: false
       },
-      role_id: {
+      roleId: {
         type: Sequelize.INTEGER,
         alowNull: false,
         references: { model: { tableName: 'Roles' }, key: 'id' }

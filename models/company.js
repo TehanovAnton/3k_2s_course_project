@@ -10,13 +10,17 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      if (models['user'])
+        Company.belongsTo(models['user'], { as:'user' })
+
+      if (models['park'])
+        Company.hasMany(models['park'], { as:'parks' })
     }
   }
   Company.init({
     name: DataTypes.STRING,
     email: DataTypes.STRING,
-    user_id: DataTypes.INTEGER
+    userId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Company',

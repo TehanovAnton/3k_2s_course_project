@@ -1,14 +1,10 @@
-const DataTypes = require('sequelize').DataTypes;
-const { sequelize } = require('./db/database');
+const { sequelize, DataTypes } = require('./db/database');
 
-const Role = require('./models/role')(sequelize, DataTypes);
-const User = require('./models/user')(sequelize, DataTypes);
-
-User.associate({ role:Role })
+const { Role, User, Technique } = require('./models/associate')
 
 func = async () => {
-    let user = await User.findOne({ include: 'role'})
-    console.log(user.role.title);
+    let user = await User.findOne({ where:{ nickname:'techOwn' }, include: 'techniques'})
+    console.log(user.techniques);
 }
 
 func()

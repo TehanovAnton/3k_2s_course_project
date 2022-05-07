@@ -9,7 +9,7 @@ module.exports = {
 
     return queryInterface.bulkInsert('Parks', [{
       capacity: 10,
-      company_id: company.id,
+      companyId: company.id,
 
       createdAt: new Date(),
       updatedAt: new Date()
