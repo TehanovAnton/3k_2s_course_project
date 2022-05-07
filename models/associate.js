@@ -6,6 +6,7 @@ const Company = require('./company')(sequelize, DataTypes);
 const Park = require('./park')(sequelize, DataTypes);
 const Technique = require('./technique')(sequelize, DataTypes);
 const Place = require('./place')(sequelize, DataTypes);
+const Work = require('./work')(sequelize, DataTypes);
 
 User.associate({ role: Role, technique: Technique, company: Company });
 Company.associate({ user: User, park: Park });
@@ -14,5 +15,5 @@ Technique.associate({ user: User, place: Place });
 Place.associate({ technique: Technique });
 
 module.exports = {
-  Role, User, Company, Park, Technique, Place,
+  Role, User, Company, Park, Technique, Place, Work,
 };
