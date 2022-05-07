@@ -16,7 +16,7 @@ usersRouter.get(
 );
 
 usersRouter.post(
-  '/users',
+  '/users/create',
   bodyParser,
   async (req, res) => {
     const { body } = req;
@@ -25,7 +25,7 @@ usersRouter.post(
       nickname: body.nickname,
       email: body.email,
       password: body.password,
-      role_id: body.role_id,
+      roleId: body.roleId,
     }).catch((error) => { res.json(error); });
 
     res.json(user);
