@@ -1,4 +1,4 @@
-TECHNIQUE_OWNER = 'technique_owner'
-COMPANY_OWNER = 'technique_owner'
+TECHNIQUE_OWNER = 'technique_owner';
+COMPANY_OWNER = 'technique_owner';
 
-module.exports = { TECHNIQUE_OWNER, COMPANY_OWNER }
+module.exports = { TECHNIQUE_OWNER, COMPANY_OWNER };

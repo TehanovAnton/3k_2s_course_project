@@ -1,16 +1,22 @@
-const DataTypes = require('sequelize').DataTypes;
-const { sequelize } = require('./db/database');
+const { sequelize, DataTypes } = require('./db/database');
 
-const Role = require('./models/role')(sequelize, DataTypes);
-const User = require('./models/user')(sequelize, DataTypes);
+const {
+  Role, User, Technique, ParkService, Schedule,
+} = require('./models/associate');
 
-User.associate({ role:Role })
+ParkService.findOne()
+  .then((parkService) => {
+    parkService.createSchedule({
+      schedulableId: parkService.id,
+      schedulableType: ParkService.name,
+      startDate: new Date(2022, 6, 2),
+      endDate: new Date(2022, 6, 12),
+    });
 
-func = async () => {
-    let user = await User.findOne({ include: 'role'})
-    console.log(user.role.title);
-}
-
-func()
+    parkService.getSchedules()
+      .then((schedules) => {
+        console.log(schedules);
+      });
+  });
 
 // console.log(application.get('env'));

@@ -1,15 +1,14 @@
-
-const { 
+const {
   setAccessTokenInCokkie,
   setAccessTokenInHeader,
   authenticationRouter,
-  passport
-} = require('../services/authentication_service')
+  passport,
+} = require('../services/authentication_service');
 
-
-authenticationRouter.post('/login',
+authenticationRouter.post(
+  '/login',
   setAccessTokenInCokkie,
-  passport.authenticate('jwt', { session:true, successRedirect: '/users' }),
-)
+  passport.authenticate('jwt', { session: true, successRedirect: '/users' }),
+);
 
-module.exports = authenticationRouter
+module.exports = authenticationRouter;
