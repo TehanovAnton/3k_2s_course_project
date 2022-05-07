@@ -1,15 +1,22 @@
-// const DataTypes = require('sequelize').DataTypes;
-// const { sequelize } = require('./db/database');
+const { sequelize, DataTypes } = require('./db/database');
 
-// const Role = require('./models/role')(sequelize, DataTypes);
-// const User = require('./models/user')(sequelize, DataTypes);
+const {
+  Role, User, Technique, ParkService, Schedule,
+} = require('./models/associate');
 
-// func = async () => {
-//     let users = await User.findAll({raw:true})
-//     console.log(users);
-// }
+ParkService.findOne()
+  .then((parkService) => {
+    parkService.createSchedule({
+      schedulableId: parkService.id,
+      schedulableType: ParkService.name,
+      startDate: new Date(2022, 6, 2),
+      endDate: new Date(2022, 6, 12),
+    });
 
-// func()
+    parkService.getSchedules()
+      .then((schedules) => {
+        console.log(schedules);
+      });
+  });
 
-const {application} = require('./initializers/express_config');
 // console.log(application.get('env'));

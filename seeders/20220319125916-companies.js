@@ -1,23 +1,21 @@
-'use strict';
-
 const { sequelize, DataTypes } = require('../db/database');
 const User = require('../models/user')(sequelize, DataTypes);
 
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    let user = await User.findOne({ where: { email:'tehanovanton@gmail.com' }, raw:true});
+  async up(queryInterface, Sequelize) {
+    const user = await User.findOne({ where: { email: 'techOwn@gmail.com' }, raw: true });
 
     return queryInterface.bulkInsert('Companies', [{
       name: 'AntonsIndastries',
       email: 'antonsindastries@gmail.com',
-      user_id: user.id,
+      userId: user.id,
 
       createdAt: new Date(),
-      updatedAt: new Date()
-    }])
+      updatedAt: new Date(),
+    }]);
   },
 
-  async down (queryInterface, Sequelize) {
-    return queryInterface.bulkDelete('Users', null, {});
-  }
+  async down(queryInterface, Sequelize) {
+    return queryInterface.bulkDelete('Companies', null, {});
+  },
 };

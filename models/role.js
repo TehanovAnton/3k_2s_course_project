@@ -1,9 +1,8 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
-  debugger
   class Role extends Model {
     /**
      * Helper method for defining associations.
@@ -15,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Role.init({
-    title: DataTypes.STRING
+    title: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Role',
