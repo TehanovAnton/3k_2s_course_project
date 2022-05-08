@@ -3,10 +3,9 @@ const session = require('express-session');
 const { express, application } = require('./express');
 
 const cookieParser = require('cookie-parser')();
-
 const expressLayouts = require('express-ejs-layouts')
-
 const passport = require('./passport');
+const methodOverride = require('method-override');
 
 const rolesRouter = require('../controllers/roles_controller');
 const usersRouter = require('../controllers/users_controller');
@@ -15,6 +14,7 @@ const parksRouter = require('../controllers/parks_controller');
 const authenticationRouter = require('../controllers/authentication_controller');
 const techniqueRouter = require('../controllers/technique_controller');
 
+application.use(methodOverride('_method'))
 application.use(expressLayouts)
 application.set('view engine', 'ejs');
 application.set('views', './views');
