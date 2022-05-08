@@ -13,6 +13,7 @@ const usersRouter = require('../controllers/users_controller');
 const companiesRouter = require('../controllers/companies_controller');
 const parksRouter = require('../controllers/parks_controller');
 const authenticationRouter = require('../controllers/authentication_controller');
+const techniqueRouter = require('../controllers/technique_controller');
 
 application.use(expressLayouts)
 application.set('view engine', 'ejs');
@@ -34,10 +35,15 @@ application.use(usersRouter);
 application.use(companiesRouter);
 application.use(parksRouter);
 application.use(authenticationRouter);
+application.use(techniqueRouter);
 
-application.get('',
+application.get('/',
   (req, res) => {
-    res.render('index', { title: 'Home Page'})
+    let viewBag = {}
+    viewBag.title = 'Home Page'
+    viewBag.techniquePath = '/technique/index'
+
+    res.render('index', viewBag)
   }
 )
 

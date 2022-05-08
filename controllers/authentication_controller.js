@@ -1,6 +1,6 @@
 const {
-  setAccessTokenInCokkie,
-  setAccessTokenInHeader,
+  setAccessTokenInCookie,
+  authenticate,
   authenticationRouter,
   passport,
 } = require('../services/authentication_service');
@@ -10,15 +10,25 @@ authenticationRouter.get(
   (req, res) => {
     let viewBag = {}
     viewBag.createUserPath = '/users/create'
-    
+
     res.render('./authentication/signup', viewBag);
+  }
+);
+
+authenticationRouter.get(
+  '/login',  
+  (req, res) => {
+    let viewBag = {}
+    viewBag.loginUserPath = '/login'
+    
+    res.render('./authentication/login', viewBag);
   }
 );
 
 authenticationRouter.post(
   '/login',
-  setAccessTokenInCokkie,
-  passport.authenticate('jwt', { session: true, successRedirect: '/' }),
+  setAccessTokenInCookie,
+  authenticate('/', '/login'),
 );
 
 module.exports = authenticationRouter;
