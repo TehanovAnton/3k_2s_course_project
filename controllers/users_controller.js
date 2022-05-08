@@ -1,8 +1,9 @@
 const bodyParser = require('body-parser')();
 const usersRouter = require('express').Router();
-const { userService, User } = require('../services/user_service');
+const { userService } = require('../services/user_service');
 const { authenticate } = require('../services/authentication_service');
 const { authorize } = require('../abilities/usersAbilies');
+const { Role, User } = require('../models/associate')
 
 usersRouter.get(
   '/users',
@@ -20,12 +21,13 @@ usersRouter.post(
   bodyParser,
   async (req, res) => {
     const { body } = req;
+    let role = await Role.findOne({ where: { title: body.role }, attributes: ['id'] });
 
     const user = await User.create({
       nickname: body.nickname,
       email: body.email,
       password: body.password,
-      roleId: body.roleId,
+      roleId: role.id,
     }).catch((error) => { res.json(error); });
 
     res.json(user);

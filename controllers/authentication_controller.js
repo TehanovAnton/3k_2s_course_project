@@ -8,7 +8,10 @@ const {
 authenticationRouter.get(
   '/signup',  
   (req, res) => {
-    res.render('./authentication/signup', { createUserPath: '/users/create' });
+    let viewBag = {}
+    viewBag.createUserPath = '/users/create'
+    
+    res.render('./authentication/signup', viewBag);
   }
 );
 
