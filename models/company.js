@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       if (models.user) Company.belongsTo(models.user, { as: 'user' });
 
-      if (models.park) Company.hasMany(models.park, { as: 'parks' });
+      if (models.park) Company.hasMany(models.park, { as: 'parks', onDelete: 'CASCADE' });
     }
   }
   Company.init({

@@ -1,9 +1,8 @@
 require('dotenv').config();
 const passport = require('passport');
-const { User } = require('../services/user_service');
+const { User } = require('../models/associate');
 
 const JwtStrategy = require('passport-jwt').Strategy;
-const { ExtractJwt } = require('passport-jwt');
 
 function extractJwtFromCoookie(req) {
   let token = null;

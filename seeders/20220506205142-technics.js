@@ -5,7 +5,7 @@ const Role = require('../models/role')(sequelize, DataTypes);
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    const technics_owner_role = await Role.findOne({ where: { title: 'technics_owner' } });
+    const technics_owner_role = await Role.findOne({ where: { title: 'technique_owner' } });
     const user = await User.findOne({ where: { roleId: technics_owner_role.id } });
     const company = await Company.findOne();
 

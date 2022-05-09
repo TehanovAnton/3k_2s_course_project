@@ -19,12 +19,12 @@ module.exports = {
       },
       password: {
         type: Sequelize.STRING,
-        unique: true,
         alowNull: false,
       },
       roleId: {
         type: Sequelize.INTEGER,
         alowNull: false,
+        onDelete: 'CASCADE',
         references: { model: { tableName: 'Roles' }, key: 'id' },
       },
       createdAt: {

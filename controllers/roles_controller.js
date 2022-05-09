@@ -1,5 +1,4 @@
-const { sequelize, DataTypes } = require('../db/database');
-const Role = require('../models/role')(sequelize, DataTypes);
+const { Role } = require('../models/associate');
 
 const rolesRouter = require('express').Router();
 

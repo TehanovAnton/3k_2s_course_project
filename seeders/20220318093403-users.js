@@ -3,7 +3,7 @@ const Role = require('../models/role')(sequelize, DataTypes);
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    const technics_owner = await Role.findOne({ where: { title: 'technics_owner' }, raw: true });
+    const technics_owner = await Role.findOne({ where: { title: 'technique_owner' }, raw: true });
     const company_owner = await Role.findOne({ where: { title: 'company_owner' }, raw: true });
 
     return queryInterface.bulkInsert('Users', [{

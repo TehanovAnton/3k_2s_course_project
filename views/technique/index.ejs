@@ -1,0 +1,11 @@
+Technique: 
+<ul>
+  <% technique.forEach(tech => { %>
+    <li>
+      <a href="/technique/<%= tech.id %>"><%= tech.name %></a>
+    </li>
+  <% }) %>
+</ul>
+<br>
+
+<a href="/technique/new">Add Technique</a>
