@@ -10,11 +10,13 @@ module.exports = {
       parkId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: { tableName: 'Parks' }, key: 'id' },
+        onDelete: 'CASCADE',
+        references: { model: 'Parks', key: 'id', as: 'parkId' },
       },
       techniqueId: {
         type: Sequelize.INTEGER,
-        references: { model: { tableName: 'Techniques' }, key: 'id' },
+        onDelete: 'CASCADE',
+        references: { model: { tableName: 'Techniques' }, key: 'id', as: 'techniqueId' },
       },
       createdAt: {
         type: Sequelize.DATE,

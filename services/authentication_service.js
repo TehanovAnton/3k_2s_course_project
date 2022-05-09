@@ -21,7 +21,7 @@ function setAccessTokenInCookie(req, res, next) {
 }
 
 function authenticate(successRedirect = null, failureRedirect = null) {
-  let passportOptions = { session: true }
+  const passportOptions = { session: true };
 
   if (successRedirect) { passportOptions.successRedirect = successRedirect; }
   if (failureRedirect) { passportOptions.failureRedirect = failureRedirect; }
@@ -29,6 +29,15 @@ function authenticate(successRedirect = null, failureRedirect = null) {
   return passport.authenticate('jwt', passportOptions);
 }
 
+function logOut(req, res) {
+  if (req.session) {
+    req.session.destroy();
+  }
+  res.clearCookie('accessToken');
+  req.logout();
+  res.redirect('/login');
+}
+
 module.exports = {
-  setAccessTokenInCookie, authenticationRouter, passport, authenticate,
+  setAccessTokenInCookie, authenticationRouter, passport, authenticate, logOut,
 };

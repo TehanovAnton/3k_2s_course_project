@@ -3,12 +3,10 @@ const usersRouter = require('express').Router();
 const { userService } = require('../services/user_service');
 const { authenticate } = require('../services/authentication_service');
 const { authorize } = require('../abilities/usersAbilies');
-const { Role, User } = require('../models/associate')
+const { Role, User } = require('../models/associate');
 
 usersRouter.get(
   '/users',
-  authenticate(),
-  authorize('readAll'),
 
   async (req, res) => {
     const users = await User.findAll({ raw: true });
@@ -21,7 +19,7 @@ usersRouter.post(
   bodyParser,
   async (req, res) => {
     const { body } = req;
-    let role = await Role.findOne({ where: { title: body.role }, attributes: ['id'] });
+    const role = await Role.findOne({ where: { title: body.role }, attributes: ['id'] });
 
     const user = await User.create({
       nickname: body.nickname,

@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       if (models.schedule) {
         ParkService.hasMany(models.schedule, {
           foreignKey: 'schedulableId',
+          onDelete: 'CASCADE',
           constraints: false,
           scope: {
             schedulableType: 'ParkService',

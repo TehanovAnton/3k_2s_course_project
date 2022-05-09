@@ -9,10 +9,12 @@ module.exports = {
       },
       parkServiceId: {
         type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
         references: { model: { tableName: 'ParkServices' }, key: 'id' },
       },
       placeId: {
         type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
         references: { model: { tableName: 'Places' }, key: 'id' },
       },
       createdAt: {

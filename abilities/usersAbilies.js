@@ -17,7 +17,7 @@ async function userAuthorise(req, res, next, abilityName) {
   let user = authUserUser;
 
   if (req.params.id) {
-    user = await User.findOne({ where: { id: req.params.id }, include: 'role' });
+    user = await User.findOne({ where: { id: parseInt(req.params.id) }, include: 'role' });
   }
 
   const ability = await abilities(authUserUser, authUserUser.id);
