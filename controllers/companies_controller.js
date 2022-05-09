@@ -1,11 +1,19 @@
 const { companyService, Company } = require('../services/company_service');
+const { authenticate } = require('../services/authentication_service');
 const companiesRouter = require('express').Router();
 const helpers = require('../helpers/helpers');
 
-companiesRouter.get('/companies/index', async (req, res) => {
-  const companies = await Company.findAll({ raw: true });
-  res.render('./companies/index', { activate: true, companies });
-});
+companiesRouter.get(
+  '/companies/index',
+  authenticate(),
+
+  async (req, res) => {
+    let viewBag = {};    
+    viewBag.companies = await Company.findAll({ raw: true });
+
+    res.render('./companies/index', viewBag);
+  }
+);
 
 companiesRouter.get('/companies/new', async (req, res) => {
   const companies = await Company.findAll({ raw: true });
