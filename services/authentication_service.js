@@ -20,7 +20,7 @@ function setAccessTokenInCookie(req, res, next) {
   next();
 }
 
-function authenticate(successRedirect = null, failureRedirect = null) {
+function authenticate(successRedirect = null, failureRedirect = '/login') {
   const passportOptions = { session: true };
 
   if (successRedirect) { passportOptions.successRedirect = successRedirect; }

@@ -19,6 +19,7 @@ usersRouter.post(
   bodyParser,
   async (req, res) => {
     const { body } = req;
+    debugger;
     const role = await Role.findOne({ where: { title: body.role }, attributes: ['id'] });
 
     const user = await User.create({

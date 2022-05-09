@@ -2,10 +2,8 @@ Companies:
 <ul>
   <% companies.forEach(company => { %>
     <li>
-      <a href="/company/<%= company.id %>"><%= company.name %></a>
+      <a href="/companies/<%= company.id %>"><%= company.name %></a>
     </li>
   <% }) %>
 </ul>
 <br>
-
-<a href="/company/new">Add company</a>

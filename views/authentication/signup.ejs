@@ -11,7 +11,12 @@
   <input type="text" id="password" name="password" required/>
   <br>
 
-  <input type="hidden" name="role" value="technique_owner" />
+  <label for="technique_owner">Role - </label>
+  <select name="role">
+    <option value="technique_owner">Technique Owner</option>
+    <option value="company_owner">Company Owner</option>
+  </select>
+  
 
   <button type="submit">Sign Up</button>
 </form>
