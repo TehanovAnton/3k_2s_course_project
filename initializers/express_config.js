@@ -2,8 +2,9 @@ require('dotenv').config();
 const session = require('express-session');
 const { express, application } = require('./express');
 
-const { hbs } = require('./handlebars');
 const cookieParser = require('cookie-parser')();
+
+const expressLayouts = require('express-ejs-layouts')
 
 const passport = require('./passport');
 
@@ -13,9 +14,10 @@ const companiesRouter = require('../controllers/companies_controller');
 const parksRouter = require('../controllers/parks_controller');
 const authenticationRouter = require('../controllers/authentication_controller');
 
-application.engine('handlebars', hbs.engine);
-application.set('view engine', 'handlebars');
+application.use(expressLayouts)
+application.set('view engine', 'ejs');
 application.set('views', './views');
+application.set('layout', './layouts/application.ejs')
 
 application.use(express.json());
 application.use(express.urlencoded({ extended: true }));
@@ -32,5 +34,11 @@ application.use(usersRouter);
 application.use(companiesRouter);
 application.use(parksRouter);
 application.use(authenticationRouter);
+
+application.get('',
+  (req, res) => {
+    res.render('index', { title: 'Home Page'})
+  }
+)
 
 module.exports = application;
