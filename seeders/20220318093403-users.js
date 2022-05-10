@@ -14,6 +14,15 @@ module.exports = {
 
       createdAt: new Date(),
       updatedAt: new Date(),
+    },
+    {
+      nickname: 'compOwn',
+      email: 'compOwn@gmail.com',
+      password: 'ewqqwe',
+      roleId: company_owner.id,
+
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }]);
   },
 

@@ -1,7 +1,7 @@
 const { companyService, Company } = require('../services/company_service');
-const { authenticate } = require('../services/authentication_service');
+const { authenticate, authenticationRouter } = require('../services/authentication_service');
 const companiesRouter = require('express').Router();
-const helpers = require('../helpers/helpers');
+const { authorize } = require('../abilities/company_abilities');
 
 companiesRouter.get(
   '/companies',
@@ -17,6 +17,7 @@ companiesRouter.get(
 companiesRouter.get(
   '/companies/index',
   authenticate(),
+  authorize('read'),
 
   async (req, res) => {
     const viewBag = {};
@@ -29,6 +30,7 @@ companiesRouter.get(
 companiesRouter.get(
   '/companies/new',
   authenticate(),
+  authorize('create'),
 
   async (req, res) => {
     const viewBag = {};
@@ -42,13 +44,30 @@ companiesRouter.get(
   },
 );
 
+companiesRouter.get(
+  '/companies/:id/show',
+  authenticate(),
+  authorize('read'),
+
+  async (req, res) => {
+    const viewBag = {};
+    viewBag.user = req.user;
+    viewBag.company = await Company.findOne({ where: { id: parseInt(req.params.id) }, raw: true });
+    viewBag.companyEditPath = `/companies/${viewBag.company.id}/edit`;
+    viewBag.companyDeletePath = `/companies/${viewBag.company.id}/delete?_method=DELETE`;
+    viewBag.parksPath = `/parks/${viewBag.company.id}/index`;
+
+    res.render('./companies/show', viewBag);
+  },
+);
+
 companiesRouter.post(
   '/companies/create',
   authenticate(),
+  authorize('create'),
 
   async (req, res, next) => {
     const { body } = req;
-    debugger;
     const company = await Company.create({
       name: body.name,
       email: body.email,
@@ -60,22 +79,9 @@ companiesRouter.post(
 );
 
 companiesRouter.get(
-  '/companies/:id',
-  authenticate(),
-
-  async (req, res) => {
-    const viewBag = {};
-    viewBag.company = await Company.findOne({ where: { id: parseInt(req.params.id) }, raw: true });
-    viewBag.companyEditPath = `/companies/${viewBag.company.id}/edit`;
-    viewBag.companyDeletePath = `/companies/${viewBag.company.id}/delete?_method=DELETE`;
-
-    res.render('./companies/show', viewBag);
-  },
-);
-
-companiesRouter.get(
   '/companies/:id/edit',
   authenticate(),
+  authorize('update'),
 
   async (req, res) => {
     const viewBag = {};
@@ -91,6 +97,7 @@ companiesRouter.get(
 companiesRouter.put(
   '/companies/:id/update',
   authenticate(),
+  authorize('update'),
 
   async (req, res) => {
     const { params } = req;
@@ -106,6 +113,7 @@ companiesRouter.put(
 companiesRouter.delete(
   '/companies/:id/delete',
   authenticate(),
+  authorize('delete'),
 
   async (req, res) => {
     const { params } = req;

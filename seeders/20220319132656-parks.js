@@ -6,6 +6,7 @@ module.exports = {
     const company = await Company.findOne({ where: { email: 'antonsindastries@gmail.com' }, raw: true });
 
     return queryInterface.bulkInsert('Parks', [{
+      address: 'Tolstogo 8',
       capacity: 10,
       companyId: company.id,
 

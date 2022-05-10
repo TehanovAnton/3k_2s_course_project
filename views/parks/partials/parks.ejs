@@ -1,0 +1,9 @@
+Companies: 
+<ul>
+  <% parks.forEach(park => { %>
+    <li>
+      <a href="/parks/<%= park.company.id %>/show/<%= park.id %>"><%= park.address %></a>
+    </li>
+  <% }) %>
+</ul>
+<br>

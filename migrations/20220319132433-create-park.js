@@ -7,15 +7,20 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      capacity: {
-        type: Sequelize.INTEGER,
-        alowNull: false,
+      address: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
       },
       companyId: {
         type: Sequelize.INTEGER,
-        alowNull: false,
+        allowNull: false,
         onDelete: 'CASCADE',
-        references: { model: { tableName: 'Companies' }, key: 'id' },
+        references: { model: 'Companies', key: 'id' },
+      },
+      capacity: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,

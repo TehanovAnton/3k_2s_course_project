@@ -12,7 +12,7 @@ const Schedule = require('./schedule')(sequelize, DataTypes);
 
 User.associate({ role: Role, technique: Technique, company: Company });
 Company.associate({ user: User, park: Park });
-Park.associate({ company: Company });
+Park.associate({ company: Company, place: Place });
 Technique.associate({ user: User, place: Place });
 Place.associate({ technique: Technique });
 ParkService.associate({ work: Work, schedule: Schedule });
