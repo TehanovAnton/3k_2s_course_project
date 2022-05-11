@@ -2,19 +2,23 @@ const {
   Model,
 } = require('sequelize');
 
-module.exports = (sequelize, DataTypes) => {
+const roles = require('../abilities/roles');
+
+module.exports = (sequelize, DataTypes) => {  
+
   class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       if (models.role) User.belongsTo(models.role, { as: 'role' });
 
       if (models.technique) User.hasMany(models.technique, { as: 'techniques', foreignKey: 'userId', onDelete: 'cascade' });
 
       if (models.company) User.hasMany(models.company, { as: 'companies', foreignKey: 'userId', onDelete: 'cascade' });
+    }
+
+    async isCompanyOwner() {
+      const { Role } = require('./associate');
+      let role = await Role.findOne({ where:{ id:this.roleId }, raw:true, attributes:['title'] })      
+      return role.title == roles.COMPANY_OWNER
     }
   }
   User.init({

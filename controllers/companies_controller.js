@@ -56,6 +56,7 @@ companiesRouter.get(
     viewBag.companyEditPath = `/companies/${viewBag.company.id}/edit`;
     viewBag.companyDeletePath = `/companies/${viewBag.company.id}/delete?_method=DELETE`;
     viewBag.parksPath = `/parks/${viewBag.company.id}/index`;
+    viewBag.parkServicesPath = `/parkservices/${viewBag.company.id}/index`
 
     res.render('./companies/show', viewBag);
   },

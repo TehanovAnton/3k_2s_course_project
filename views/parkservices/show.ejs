@@ -1,0 +1,10 @@
+Name: <%= parkService.name %>
+<br>
+
+Company: <%= parkService.company.name %>
+<br>
+
+<% if(user.isCompanyOwner()) { %>
+  <a href="<%= parkServiceEditPath %>">Edit</a>
+  <a href="<%= parkServiceDeletePath %>">Delete</a>
+<% } %>
