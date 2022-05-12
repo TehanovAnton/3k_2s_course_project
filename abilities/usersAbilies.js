@@ -8,36 +8,39 @@ const Role = require('../models/role')(sequelize, DataTypes);
 
 User.associate({ role: Role });
 
-function authorize(abilityName) {
-  return (req, res, next) => userAuthorise(req, res, next, abilityName);
+function authorize(abilityName, failureRedirect = 'back') {
+  return async (req, res, next) => {
+    if (await userAuthorise(req, res, abilityName)) {
+      return next();
+    }
+    res.redirect(failureRedirect);
+  };
 }
 
-async function userAuthorise(req, res, next, abilityName) {
-  const authUserUser = await User.findOne({ where: { id: req.user.id }, include: 'role' });
-  let user = authUserUser;
+async function userAuthorise(req, res, abilityName) {
+  let authUserUser = user = {};
+  if (req.isAuthenticated()) {
+    authUserUser = await User.findOne({ where: { id: req.user.id }, include: 'role' });
+  }
 
   if (req.params.id) {
     user = await User.findOne({ where: { id: parseInt(req.params.id) }, include: 'role' });
   }
 
   const ability = await abilities(authUserUser, authUserUser.id);
-  if (ability.can(abilityName, user)) {
-    return next();
-  }
-
-  res.send('permission denied');
+  return ability.can(abilityName, user);
 }
 
 let abilities = async (user, authUserId) => {
   const { can, rules } = new AbilityBuilder(Ability);
 
-  if (user.role.title == roles.TECHNIQUE_OWNER) {
-    can('readAll', 'User', { id: authUserId });
+  if (!authUserId) {
+    can('create');
+  } else if (await user.isCompanyOwner()) {
     can('read', 'User', { id: authUserId });
     can('delete', 'User', { id: authUserId });
     can('update', 'User', { id: authUserId });
-  } else if (user.role.title == roles.TECHNIQUE_OWNER) {
-    can('read_ability', 'User', { id: authUserId });
+  } else if (await user.isTechniqueOwner()) {
     can('read', 'User', { id: authUserId });
   }
 

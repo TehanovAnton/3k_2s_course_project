@@ -1,0 +1,9 @@
+<form action="<%= path %>" method="post">
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="name" value="<%= work.name %>" required/>
+  <br>
+  
+  <input type="hidden" name="companyId" value="<%= company.id %>">
+
+  <button type="submit"><%= buttonLabel %></button>
+</form>

@@ -1,4 +1,6 @@
 <%- include('./partials/parks.ejs') %> 
 <br>
 
-<a href="<%= newParkPath %>">Create Park</a>
+<% if (userOwnCompany) { %>
+  <a href="<%= newParkPath %>">Create Park</a>
+<% } %>

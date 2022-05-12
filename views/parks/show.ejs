@@ -7,5 +7,7 @@ Capacity: <%= park.capacity %>
 Company: <%= park.company.name %>
 <br>
 
-<a href="<%= editParkPath %>">Edit</a>
-<a href="<%= deleteParkPath %>">Delete</a>
+<% if(userIsCompanyOwner) { %>
+  <a href="<%= editParkPath %>">Edit</a>
+  <a href="<%= deleteParkPath %>">Delete</a>
+<% } %>

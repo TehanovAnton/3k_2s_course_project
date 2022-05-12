@@ -7,15 +7,17 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      companyId: {
+      placeId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         onDelete: 'CASCADE',
-        references: { model: { tableName: 'Companies' }, key: 'id' },
+        references: { model: { tableName: 'Places' }, key: 'id' },
+      },
+      workId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        onDelete: 'CASCADE',
+        references: { model: { tableName: 'Works' }, key: 'id' },
       },
       createdAt: {
         allowNull: false,

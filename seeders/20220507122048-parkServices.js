@@ -1,12 +1,13 @@
-const { Company } = require('../models/associate');
+const { Work, Place } = require('../models/associate');
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    const company = await Company.findOne({ raw:true, attributes:['id'] });
+    const company = await Work.findOne({ raw: true, attributes: ['id'] });
+    const place = await Place.findOne({ raw: true, attributes: ['id'] });
 
     return queryInterface.bulkInsert('ParkServices', [{
-      name:'cleaning',
-      companyId: company.id,
+      placeId: place.id,
+      workId: company.id,
 
       createdAt: new Date(),
       updatedAt: new Date(),

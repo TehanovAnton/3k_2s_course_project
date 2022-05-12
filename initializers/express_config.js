@@ -13,7 +13,8 @@ const companiesRouter = require('../controllers/companies_controller');
 const parksRouter = require('../controllers/parks_controller');
 const authenticationRouter = require('../controllers/authentication_controller');
 const techniqueRouter = require('../controllers/technique_controller');
-const parkServiceRouter = require('../controllers/park_services_controller')
+const parkServiceRouter = require('../controllers/park_services_controller');
+const worksRouter = require('../controllers/works_controller');
 
 application.use(methodOverride('_method', { methods: ['POST', 'GET'] }));
 application.use(expressLayouts);
@@ -37,7 +38,8 @@ application.use(companiesRouter);
 application.use(parksRouter);
 application.use(authenticationRouter);
 application.use(techniqueRouter);
-application.use(parkServiceRouter)
+application.use(parkServiceRouter);
+application.use(worksRouter);
 
 application.get(
   '/',

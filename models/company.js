@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 
       if (models.park) Company.hasMany(models.park, { as: 'parks', foreignKey: 'companyId', onDelete: 'CASCADE' });
 
-      if (models.parkservice) Company.hasMany(models.parkservice, { as:'park_services', foreignKey: 'companyId', onDelete: 'CASCADE' })
+      if (models.parkservice) Company.hasMany(models.parkservice, { as: 'park_services', foreignKey: 'companyId', onDelete: 'CASCADE' });
     }
   }
   Company.init({

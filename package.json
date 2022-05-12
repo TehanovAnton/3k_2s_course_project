@@ -27,7 +27,8 @@
     "eslint": "^8.14.0",
     "eslint-config-airbnb": "^19.0.4",
     "method-override": "^3.0.0",
-    "sequelize-cli": "^6.4.1"
+    "sequelize-cli": "^6.4.1",
+    "underscore": "^1.13.3"
   },
   "scripts": {
     "test": "node try.js",

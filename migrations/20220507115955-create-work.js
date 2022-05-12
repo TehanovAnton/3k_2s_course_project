@@ -11,6 +11,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      companyId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: { model: { tableName: 'Companies' }, key: 'id' },
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

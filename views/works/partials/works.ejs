@@ -1,0 +1,9 @@
+Works: 
+<ul>
+  <% works.forEach(work => { %>
+    <li>
+      <a href="/works/<%= company.id %>/show/<%= work.id %>"><%= work.name %></a>
+    </li>
+  <% }) %>
+</ul>
+<br>

@@ -57,7 +57,7 @@ techniqueRouter.post(
 );
 
 techniqueRouter.get(
-  '/technique/:id',
+  '/technique/:id/show',
   authenticate(),
   authorize('read'),
 

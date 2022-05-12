@@ -1,5 +1,6 @@
-const { Park } = require('../models/associate');
+const { Park, User, Company } = require('../models/associate');
 const { authenticate } = require('../services/authentication_service');
+const { authorize } = require('../abilities/parks_ability');
 
 const Service = require('../services/service').Service(Park);
 const parksRouter = require('express').Router();
@@ -7,6 +8,7 @@ const parksRouter = require('express').Router();
 parksRouter.get(
   '/parks/:companyId/index',
   authenticate(),
+  authorize('read_all'),
 
   async (req, res) => {
     const { params } = req;
@@ -15,6 +17,8 @@ parksRouter.get(
       where: { companyId: parseInt(params.companyId) },
       include: 'company',
     });
+    viewBag.user = await User.findByPk(req.user.id);
+    viewBag.userOwnCompany = await viewBag.user.hasCompany(await Company.findByPk(params.companyId));
     viewBag.newParkPath = `/parks/${params.companyId}/new`;
 
     res.render('./parks/index', viewBag);
@@ -24,6 +28,7 @@ parksRouter.get(
 parksRouter.get(
   '/parks/:companyId/new',
   authenticate(),
+  authorize('create'),
 
   async (req, res) => {
     const { params } = req;
@@ -40,6 +45,8 @@ parksRouter.get(
 
 parksRouter.post(
   '/parks/:companyId/create',
+  authenticate(),
+  authorize('create'),
 
   async (req, res) => {
     const { params, body } = req;
@@ -57,11 +64,14 @@ parksRouter.post(
 parksRouter.get(
   '/parks/:companyId/show/:id',
   authenticate(),
+  authorize('read'),
 
   async (req, res) => {
     const { params } = req;
     const viewBag = {};
 
+    viewBag.user = await User.findByPk(req.user.id);
+    viewBag.userIsCompanyOwner = await viewBag.user.isCompanyOwner();
     viewBag.park = await Park.findOne({
       where: { id: parseInt(params.id), companyId: parseInt(params.companyId) },
       include: 'company',
@@ -76,6 +86,7 @@ parksRouter.get(
 parksRouter.get(
   '/parks/:companyId/edit/:id',
   authenticate(),
+  authorize('update'),
 
   async (req, res) => {
     const { params } = req;
@@ -95,6 +106,8 @@ parksRouter.get(
 
 parksRouter.put(
   '/parks/:companyId/update/:id',
+  authenticate(),
+  authorize('update'),
 
   async (req, res) => {
     const { params, body } = req;
@@ -113,6 +126,8 @@ parksRouter.put(
 
 parksRouter.delete(
   '/parks/:companyId/delete/:id',
+  authenticate(),
+  authorize('delete'),
 
   async (req, res) => {
     const { params } = req;

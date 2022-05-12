@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
           },
         );
       }
+      if (models.parkService) {
+        Place.hasMany(models.parkService, { as: 'parkServices', foreignKey: 'placeId', onDelete: 'CASCADE' });
+      }
     }
   }
   Place.init({

@@ -15,12 +15,13 @@ module.exports = (sequelize, DataTypes) => {
           },
         });
       }
-      if (models.company) ParkService.belongsTo(models.company, { as: 'company' })
+      if (models.work) ParkService.belongsTo(models.work, { as: 'work' });
+      if (models.place) ParkService.belongsTo(models.place, { as: 'place' });
     }
   }
   ParkService.init({
-    name: DataTypes.STRING,
-    companyId: DataTypes.INTEGER,
+    placeId: DataTypes.INTEGER,
+    workId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'ParkService',

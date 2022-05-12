@@ -1,7 +1,7 @@
-const { companyService, Company } = require('../services/company_service');
+const { Company } = require('../models/associate');
 const { authenticate, authenticationRouter } = require('../services/authentication_service');
 const companiesRouter = require('express').Router();
-const { authorize } = require('../abilities/company_abilities');
+const { authorize } = require('../abilities/companies_abilities');
 
 companiesRouter.get(
   '/companies',
@@ -56,7 +56,7 @@ companiesRouter.get(
     viewBag.companyEditPath = `/companies/${viewBag.company.id}/edit`;
     viewBag.companyDeletePath = `/companies/${viewBag.company.id}/delete?_method=DELETE`;
     viewBag.parksPath = `/parks/${viewBag.company.id}/index`;
-    viewBag.parkServicesPath = `/parkservices/${viewBag.company.id}/index`
+    viewBag.worksPath = `/works/${viewBag.company.id}/index`;
 
     res.render('./companies/show', viewBag);
   },

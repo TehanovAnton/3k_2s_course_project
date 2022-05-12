@@ -3,11 +3,17 @@ const { AbilityBuilder, Ability } = require('@casl/ability');
 const roles = require('./roles');
 const { Technique, User } = require('../models/associate');
 
-function authorize(abilityName) {
-  return (req, res, next) => techniqueAuthorise(req, res, next, abilityName);
+function authorize(abilityName, failureRedirect = 'back') {
+  return async (req, res, next) => {
+    if (await techniqueAuthorise(req, abilityName)) {
+      next();
+    } else {
+      res.redirect(failureRedirect);
+    }
+  };
 }
 
-async function techniqueAuthorise(req, res, next, abilityName) {
+async function techniqueAuthorise(req, abilityName) {
   const authUser = await User.findOne({ where: { id: req.user.id }, include: 'role' });
   let technique = subject('Technique', { userId: authUser.id });
 
@@ -16,19 +22,14 @@ async function techniqueAuthorise(req, res, next, abilityName) {
   }
 
   const ability = await abilities(authUser, authUser.id);
-  if (ability.can(abilityName, technique)) {
-    return next();
-  }
-
-  res.send('permission denied');
+  return ability.can(abilityName, technique);
 }
 
 let abilities = async (user, authUserId) => {
   const { can, rules } = new AbilityBuilder(Ability);
 
-  if (user.role.title == roles.TECHNIQUE_OWNER) {
+  if (await user.isTechniqueOwner()) {
     can('manage', 'Technique', { userId: authUserId });
-  } else if (user.role.title == roles.COMPANY_OWNER) {
   }
 
   return new Ability(rules);

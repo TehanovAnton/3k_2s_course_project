@@ -1,0 +1,10 @@
+Company: <%= work.company.name %>
+<br>
+
+Work: <%= work.name %>
+<br>
+
+<% if (userOwnCompany) { %>
+  <a href="<%= editWorkPath %>">Edit</a>
+  <a href="<%= deleteWorkPath %>">Delete</a>
+<% } %>

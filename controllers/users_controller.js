@@ -5,6 +5,7 @@ const { authenticate } = require('../services/authentication_service');
 const { authorize } = require('../abilities/usersAbilies');
 const { Role, User } = require('../models/associate');
 
+// out of project goals
 usersRouter.get(
   '/users',
 
@@ -17,9 +18,9 @@ usersRouter.get(
 usersRouter.post(
   '/users/create',
   bodyParser,
+  authorize('create'),
   async (req, res) => {
     const { body } = req;
-    debugger;
     const role = await Role.findOne({ where: { title: body.role }, attributes: ['id'] });
 
     const user = await User.create({
