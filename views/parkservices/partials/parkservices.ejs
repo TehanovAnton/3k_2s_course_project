@@ -1,8 +1,8 @@
-Services: 
+Park Services: 
 <ul>
   <% parkServices.forEach(parkService => { %>
     <li>
-      <a href="/parkservices/<%= parkService.company.id %>/show/<%= parkService.id %>"><%= parkService.name %></a>
+      <a href="/parkservices/<%= parkService.company.id %>/show/<%= parkService.id %>"><%= parkService.work.name %></a>
     </li>
   <% }) %>
 </ul>

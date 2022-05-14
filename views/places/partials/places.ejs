@@ -1,0 +1,11 @@
+Places: 
+<ul>  
+  <% places.forEach(place => { %>
+    <li>
+      <a href="<%= showPlacePath(place) %>"><%= place.technique.name %>:<%= place.park.address %></a>
+    </li>
+  <% }) %>
+</ul>
+<br>
+
+<a href="<%= orderPlacePath %>">Order Place</a>

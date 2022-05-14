@@ -7,16 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       if (models.user) Technique.belongsTo(models.user, { as: 'user' });
 
-      if (models.place) {
-        Technique.hasOne(
-          models.place,
-          {
-            onDelete: 'CASCADE',
-            as: 'place',
-            foreignKey: 'techniqueId',
-          },
-        );
-      }
+      if (models.place) { Technique.hasOne(models.place, { as: 'place', foreignKey: 'techniqueId', onDelete: 'CASCADE' }); }
     }
   }
   Technique.init({

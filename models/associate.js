@@ -14,7 +14,7 @@ User.associate({ role: Role, technique: Technique, company: Company });
 Company.associate({ user: User, park: Park });
 Park.associate({ company: Company, place: Place });
 Technique.associate({ user: User, place: Place });
-Place.associate({ technique: Technique, parkService: ParkService });
+Place.associate({ park: Park, technique: Technique, parkService: ParkService });
 Work.associate({ company: Company });
 ParkService.associate({ place: Place, work: Work, schedule: Schedule });
 Schedule.associate({ parkService: ParkService });

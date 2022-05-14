@@ -51,12 +51,14 @@ companiesRouter.get(
 
   async (req, res) => {
     const viewBag = {};
+
     viewBag.user = req.user;
     viewBag.company = await Company.findOne({ where: { id: parseInt(req.params.id) }, raw: true });
     viewBag.companyEditPath = `/companies/${viewBag.company.id}/edit`;
     viewBag.companyDeletePath = `/companies/${viewBag.company.id}/delete?_method=DELETE`;
     viewBag.parksPath = `/parks/${viewBag.company.id}/index`;
     viewBag.worksPath = `/works/${viewBag.company.id}/index`;
+    viewBag.parkServicesPath = `/parkservices/${viewBag.company.id}/index`;
 
     res.render('./companies/show', viewBag);
   },

@@ -1,0 +1,10 @@
+<h1>Place</h1>
+<br>
+
+<%= place.park.address %>: <%= place.technique.name %>
+<br>
+
+<% if(userOwnPlace) { %>
+  <a href="<%= editPlacePath %>">Edit</a>|
+  <a href="<%= deletePlacePath %>">Delete</a>
+<% } %>

@@ -1,7 +1,7 @@
 const {
   Model,
 } = require('sequelize');
-
+const _ = require('underscore');
 const roles = require('../abilities/roles');
 
 module.exports = (sequelize, DataTypes) => {
@@ -31,6 +31,14 @@ module.exports = (sequelize, DataTypes) => {
       const userCompany = await Company.findOne({ where: { id: company.id, userId: this.id } });
 
       return !!userCompany;
+    }
+
+    async hasPlace(place) {
+      const { Place, Technique } = require('./associate');
+      const techniquesIds =  _.map(await Technique.findAll({ where: { userId: this.id } }), technique => technique.id);
+      const userPlace = await Place.findOne({ where: { id: place.id, techniqueId:techniquesIds } });
+
+      return !!userPlace
     }
   }
   User.init({

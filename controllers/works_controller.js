@@ -1,6 +1,6 @@
 const { Company, Work, User } = require('../models/associate');
-const { authenticate, authenticationRouter } = require('../services/authentication_service');
-const { authorize } = require('../abilities/companies_abilities');
+const { authenticate } = require('../services/authentication_service');
+const { authorize } = require('../abilities/works_abilities');
 const worksRouter = require('express').Router();
 
 worksRouter.get(
@@ -17,6 +17,7 @@ worksRouter.get(
 worksRouter.get(
   '/works/:companyId/index',
   authenticate(),
+  authorize('read'),
 
   async (req, res) => {
     const { params } = req;
@@ -41,7 +42,7 @@ worksRouter.get(
     const { params } = req;
     const viewBag = {};
 
-    viewBag.path = '/works/:companyId/create';
+    viewBag.path = `/works/${params.companyId}/create`;
     viewBag.work = {};
     viewBag.company = await Company.findByPk(params.companyId);
     viewBag.user = req.user;
@@ -54,6 +55,7 @@ worksRouter.get(
 worksRouter.post(
   '/works/:companyId/create',
   authenticate(),
+  authorize('create'),
 
   async (req, res) => {
     const { params, body } = req;
@@ -70,6 +72,7 @@ worksRouter.post(
 worksRouter.get(
   '/works/:companyId/show/:id',
   authenticate(),
+  authorize('read'),
 
   async (req, res) => {
     const { params } = req;
@@ -88,6 +91,7 @@ worksRouter.get(
 worksRouter.get(
   '/works/:companyId/edit/:id',
   authenticate(),
+  authorize('update'),
 
   async (req, res) => {
     const { params } = req;
@@ -106,6 +110,7 @@ worksRouter.get(
 worksRouter.put(
   '/works/:companyId/update/:id',
   authenticate(),
+  authorize('update'),
 
   async (req, res) => {
     const { params } = req;
@@ -120,6 +125,7 @@ worksRouter.put(
 worksRouter.delete(
   '/works/:companyId/delete/:id',
   authenticate(),
+  authorize('delete'),
 
   async (req, res) => {
     const { params } = req;

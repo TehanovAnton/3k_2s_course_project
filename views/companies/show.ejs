@@ -4,8 +4,9 @@ Name: <%= company.name %>
 Email: <%= company.email %>
 <br>
 
-<a href="<%= parksPath %>">Parks</a>
-<a href="<%= worksPath %>">Works</a>
+<a href="<%= parksPath %>">Parks</a>|
+<a href="<%= worksPath %>">Works</a>|
+<a href="<%= parkServicesPath %>" >My Park Services</a>
 <% if(company.userId === user.id) {%>
   <a href="<%= companyEditPath %>">Edit</a>
   <a href="<%= companyDeletePath %>">Delete</a>

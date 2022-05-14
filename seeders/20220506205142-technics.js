@@ -7,11 +7,10 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const technics_owner_role = await Role.findOne({ where: { title: 'technique_owner' } });
     const user = await User.findOne({ where: { roleId: technics_owner_role.id } });
-    const company = await Company.findOne();
-
+    
     return queryInterface.bulkInsert('Techniques', [{
       userId: user.id,
-      name: company.name,
+      name: 'track',
 
       createdAt: new Date(),
       updatedAt: new Date(),

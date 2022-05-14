@@ -78,6 +78,7 @@ parksRouter.get(
     });
     viewBag.editParkPath = `/parks/${params.companyId}/edit/${params.id}`;
     viewBag.deleteParkPath = `/parks/${params.companyId}/delete/${params.id}?_method=DELETE`;
+    viewBag.placesIndexPath = `/places/${params.id}/index`;
 
     res.render('./parks/show', viewBag);
   },

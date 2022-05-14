@@ -15,6 +15,7 @@ module.exports = {
       },
       techniqueId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         onDelete: 'CASCADE',
         references: { model: { tableName: 'Techniques' }, key: 'id', as: 'techniqueId' },
       },

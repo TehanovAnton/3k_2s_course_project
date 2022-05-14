@@ -1,18 +1,21 @@
-const { ParkService, Company, User } = require('../models/associate');
+const { ParkService, User } = require('../models/associate');
 const { authenticate } = require('../services/authentication_service');
 
 const parkServiceRouter = require('express').Router();
 
 parkServiceRouter.get(
-  '/parkservices/:companyId/index',
+  '/parkservices/:placeId/index',
   authenticate(),
 
   async (req, res) => {
     const { params } = req;
     const viewBag = {};
-    viewBag.parkServices = await ParkService.findAll({ where: { companyId: params.companyId }, include: 'company' });
-    viewBag.addParkServicePath = `/parkservices/${params.companyId}/new
-    `;
+
+    viewBag.parkServices = await ParkService.findAll({ where: { placeId: params.placeId }, include: 'work' });
+    viewBag.addParkServicePath = `/parkservices/${params.placeId}/new`;
+
+    debugger
+
     res.render('./parkservices/index', viewBag);
   },
 );

@@ -16,6 +16,8 @@ module.exports = (sequelize, DataTypes) => {
       }
       if (models.parkService) {
         Place.hasMany(models.parkService, { as: 'parkServices', foreignKey: 'placeId', onDelete: 'CASCADE' });
+        Place.belongsTo(models.technique, { as: 'technique' });
+        Place.belongsTo(models.park, { as: 'park' });
       }
     }
   }

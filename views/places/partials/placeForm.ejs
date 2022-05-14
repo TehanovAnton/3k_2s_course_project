@@ -1,0 +1,19 @@
+Order Place
+<br>
+
+<form action="<%= path %>" method="post">
+  <h1>Park - <%= park.address %></h1>
+  <br>  
+
+  <label for="technique_owner">Technique - </label>
+  <select id="technique" name="techniqueId">
+    <% techniques.forEach(technique => { %>
+      <option value="<%= technique.id %>"><%= technique.name %></option>
+    <% }) %>
+  </select>
+  <br>
+
+  <input type="hidden" name="parkId" value="<%= park.id %>">
+
+  <button type="submit"><%= buttonLabel %></button>
+</form>
