@@ -18,7 +18,7 @@ passport.use(new JwtStrategy(
     jwtFromRequest: extractJwtFromCoookie,
   },
 
-  (async (jwt_payload, done) => {
+  (async (jwt_payload, done) => {    
     const user = await User.findOne({ where: { email: jwt_payload.email, password: jwt_payload.password }, raw: true });
 
     if (user) { return done(null, user); }

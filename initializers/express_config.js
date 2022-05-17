@@ -16,6 +16,7 @@ const techniqueRouter = require('../controllers/technique_controller');
 const parkServiceRouter = require('../controllers/park_services_controller');
 const worksRouter = require('../controllers/works_controller');
 const placesRouter = require('../controllers/places_controller');
+const { authenticate } = require('../services/authentication_service');
 
 application.use(methodOverride('_method', { methods: ['POST', 'GET'] }));
 application.use(expressLayouts);
@@ -45,6 +46,8 @@ application.use(placesRouter);
 
 application.get(
   '/',
+  authenticate(),
+
   (req, res) => {
     const viewBag = {};
     viewBag.title = 'Home Page';

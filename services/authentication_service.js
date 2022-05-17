@@ -17,11 +17,11 @@ function setAccessTokenInCookie(req, res, next) {
 
   res.cookie('accessToken', accessToken);
 
-  next();
+  res.redirect('/');
 }
 
 function authenticate(successRedirect = null, failureRedirect = '/login') {
-  const passportOptions = { session: true };
+  const passportOptions = { session: true };  
 
   if (successRedirect) { passportOptions.successRedirect = successRedirect; }
   if (failureRedirect) { passportOptions.failureRedirect = failureRedirect; }
