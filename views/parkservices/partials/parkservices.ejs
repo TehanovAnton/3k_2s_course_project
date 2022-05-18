@@ -2,7 +2,14 @@ Park Services:
 <ul>
   <% parkServices.forEach(parkService => { %>
     <li>
-      <a href="/parkservices/<%= parkService.work.companyId %>/show/<%= parkService.id %>"><%= parkService.work.name %></a>
+      <a href="/parkservices/<%= parkService.work.companyId %>/show/<%= parkService.id %>">
+        <div>
+          <%= parkService.place.park.address %>: <%= parkService.place.technique.name %>: <%= parkService.work.name %> 
+          <br>
+
+          Time: <%= parkService.schedules[0].startDate %> - <%= parkService.schedules[0].endDate %>
+        </div>
+      </a>
     </li>
   <% }) %>
 </ul>

@@ -28,6 +28,20 @@ const userPlace = async () => {
   console.log(places);
 } 
 
-userPlace();
+const parkServiceSchedule = async () => {
+  parkservice = await ParkService.findOne()
+  await parkservice.createSchedule({ startDate:Date.now(), endDate:Date.now(), schedulableId: parkservice.id, schedulableType: ParkService.name })
+
+  parkservice = await ParkService.findOne({ include:'schedules' })
+  console.log(await parkservice.parkservice);
+}
+
+const destroyParkService = async () => {
+  parkservice = await ParkService.findOne()
+  await parkservice.destroy()
+  console.log(await Schedule.findAll());
+}
+
+destroyParkService()
 
 // console.log(application.get('env'));

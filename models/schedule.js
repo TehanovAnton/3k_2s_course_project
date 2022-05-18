@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       if (models.parkService) {
         Schedule.belongsTo(models.parkService, {
           foreignKey: 'schedulableId',
+          onDelete: 'CASCADE',
           constraints: false,
         });
       }

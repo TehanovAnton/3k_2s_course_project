@@ -1,5 +1,5 @@
 const { sequelize } = require('../db/database');
-const { ParkService, User, Place, Technique } = require('../models/associate');
+const { ParkService, User, Park, Place, Technique, Company, Work } = require('../models/associate');
 const { authenticate } = require('../services/authentication_service');
 const _ = require('underscore')
 
@@ -23,13 +23,16 @@ parkServiceRouter.get(
        }],
     })
     places = _.map(places, place => place.id);
-    
-    debugger
 
     viewBag.parkServices = await ParkService.findAll({ 
       where: { placeId:places },
-      include: 'work'
+      include: [
+        'work',
+        'schedules',
+        { model: Place, as: 'place', include: ['park', 'technique'] },
+      ]
     });
+
     viewBag.addParkServicePath = `/parkservices/${params.placeId}/new`;
 
     res.render('./parkservices/index', viewBag);
@@ -54,16 +57,26 @@ parkServiceRouter.get(
 );
 
 parkServiceRouter.get(
-  '/parkservices/:placeId/new',
+  '/parkservices/:companyId/new',
   authenticate(),
 
   async (req, res) => {
     const { params } = req;
     const viewBag = {};
 
-    viewBag.path = `/parkservices/${params.placeId}/create`;
+    viewBag.places = await Place.findAll({
+      include: [
+        { model: Technique, as: 'technique', where: { userId: req.user.id } },
+        { model: Park, as: 'park', where: { companyId: params.companyId }, include: 'company' },
+      ]
+    });
+
+    viewBag.works = await Work.findAll({
+      include: [{ model: Company, as: 'company', where: {userId: req.user.id} }]
+    });
+
+    viewBag.path = `/parkservices/${params.companyId}/create`;
     viewBag.parkService = {};
-    viewBag.company = { id: params.placeId };
     viewBag.buttonLabel = 'Add';
 
     res.render('./parkservices/new', viewBag);
@@ -71,18 +84,27 @@ parkServiceRouter.get(
 );
 
 parkServiceRouter.post(
-  '/parkservices/:placeId/create',
+  '/parkservices/:companyId/create',
   authenticate(),
 
   async (req, res) => {
     const { params, body } = req;
 
-    await ParkService.create({
+    debugger
+
+    let parkservice = await ParkService.create({
       placeId: body.placeId,
       workId: body.workId,
     });
 
-    res.redirect(`/parkservices/${params.placeId}/index`);
+    parkservice.createSchedule({
+      startDate:Date.now(), 
+      endDate:Date.now(), 
+      schedulableId: parkservice.id, 
+      schedulableType: ParkService.name
+    })
+
+    res.redirect(`/parkservices/index`);
   },
 );
 

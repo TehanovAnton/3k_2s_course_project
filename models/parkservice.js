@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       if (models.schedule) {
         ParkService.hasMany(models.schedule, {
           foreignKey: 'schedulableId',
+          as: 'schedules',
           onDelete: 'CASCADE',
           constraints: false,
           scope: {
@@ -23,6 +24,12 @@ module.exports = (sequelize, DataTypes) => {
     placeId: DataTypes.INTEGER,
     workId: DataTypes.INTEGER,
   }, {
+    hooks: {
+      beforeDestroy: async (instance, options) => {
+        const { Schedule } = require('./associate');
+        await Schedule.destroy({ where:{ schedulableId: instance.id, schedulableType: ParkService.name } });
+      }
+    },
     sequelize,
     modelName: 'ParkService',
   });
