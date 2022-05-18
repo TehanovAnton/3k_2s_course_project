@@ -40,17 +40,25 @@ parkServiceRouter.get(
 );
 
 parkServiceRouter.get(
-  '/parkservices/:placeId/show/:id',
+  '/parkservices/:companyId/show/:id',
   authenticate(),
 
   async (req, res) => {
-    const { params } = req;
+    const { params, user } = req;
     const viewBag = {};
 
-    viewBag.parkService = await ParkService.findOne({ where: { id: parseInt(params.id), placeId: parseInt(params.placeId) }, include: 'company' });
-    viewBag.user = await User.findByPk(req.user.id);
-    viewBag.parkServiceEditPath = `/parkservices/${params.placeId}/edit/${params.id}`;
-    viewBag.parkServiceDeletePath = `/parkservices/${params.placeId}/delete/${params.id}?_method=DELETE`;
+    viewBag.parkService = await ParkService.findOne({
+      where: { id: params.id, placeId: params.companyId },
+      include: [{ 
+        model: Place, as: 'place', include: [{
+          model: Park, as: 'park', include: 'company',
+        }]          
+      }]
+    });
+
+    viewBag.user = await User.findByPk(user.id)
+    viewBag.parkServiceEditPath = `/parkservices/${params.companyId}/edit/${params.id}`;
+    viewBag.parkServiceDeletePath = `/parkservices/${params.companyId}/delete/${params.id}?_method=DELETE`;
 
     res.render('./parkservices/show', viewBag);
   },
@@ -109,16 +117,25 @@ parkServiceRouter.post(
 );
 
 parkServiceRouter.get(
-  '/parkservices/:placeId/edit/:id',
+  '/parkservices/:companyId/edit/:id',
   authenticate(),
 
   async (req, res) => {
     const { params } = req;
     const viewBag = {};
 
-    viewBag.path = `/parkservices/${params.placeId}/update/${params.id}?_method=PUT`;
+    viewBag.places = await Place.findAll({
+      include: [
+        { model: Park, as: 'park', where: { companyId: params.companyId }, include: 'company' },
+      ]
+    });
+
+    viewBag.works = await Work.findAll({
+      include: [{ model: Company, as: 'company', where: {userId: req.user.id} }]
+    });
+    
     viewBag.parkService = await ParkService.findOne({ where: { id: params.id, placeId: params.placeId }, include: 'company' });
-    viewBag.company = viewBag.parkService.company;
+    viewBag.path = `/parkservices/${params.companyId}/update/${params.id}?_method=PUT`;
     viewBag.buttonLabel = 'Update';
 
     res.render('./parkservices/edit', viewBag);

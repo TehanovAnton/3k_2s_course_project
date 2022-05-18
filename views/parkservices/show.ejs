@@ -1,7 +1,7 @@
-Name: <%= parkService.name %>
+Work: <%= parkService.name %>
 <br>
 
-Company: <%= parkService.company.name %>
+Company: <%= parkService.place.park.company.name %> - <%= parkService.place.park.address %>
 <br>
 
 <% if(user.isCompanyOwner()) { %>
