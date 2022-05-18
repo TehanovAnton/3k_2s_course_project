@@ -1,7 +1,7 @@
 const { sequelize, DataTypes } = require('./db/database');
 
 const {
-  Role, User, Technique, ParkService, Schedule, Park,
+  Role, User, Technique, ParkService, Schedule, Park, Place
 } = require('./models/associate');
 
 const destroyTechnique = async () => await Technique.destroy({ where: { id: 2 } });
@@ -15,6 +15,19 @@ const userRoleCheck = async () => {
   console.log(`Check: ${await user.isCompanyOwner()}`);
 };
 
-userRoleCheck();
+const userPlace = async () => {
+  let places = await Place.findAll({
+    include: [{
+      model: Technique,
+      as: 'technique',
+      where: {userId: 3},
+      required: false,
+     }]
+  })
+
+  console.log(places);
+} 
+
+userPlace();
 
 // console.log(application.get('env'));

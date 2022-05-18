@@ -1,53 +1,69 @@
-const { ParkService, User } = require('../models/associate');
+const { sequelize } = require('../db/database');
+const { ParkService, User, Place, Technique } = require('../models/associate');
 const { authenticate } = require('../services/authentication_service');
+const _ = require('underscore')
 
 const parkServiceRouter = require('express').Router();
 
 parkServiceRouter.get(
-  '/parkservices/:placeId/index',
+  '/parkservices/index',
   authenticate(),
 
   async (req, res) => {
-    const { params } = req;
+    const { user, params } = req;
     const viewBag = {};
 
-    viewBag.parkServices = await ParkService.findAll({ where: { placeId: params.placeId }, include: 'work' });
-    viewBag.addParkServicePath = `/parkservices/${params.placeId}/new`;
-
+    let places = await Place.findAll({
+      attributes: ['id'],
+      include: [{
+        model: Technique,
+        as: 'technique',
+        where: {userId: user.id},
+        required: false,
+       }],
+    })
+    places = _.map(places, place => place.id);
+    
     debugger
+
+    viewBag.parkServices = await ParkService.findAll({ 
+      where: { placeId:places },
+      include: 'work'
+    });
+    viewBag.addParkServicePath = `/parkservices/${params.placeId}/new`;
 
     res.render('./parkservices/index', viewBag);
   },
 );
 
 parkServiceRouter.get(
-  '/parkservices/:companyId/show/:id',
+  '/parkservices/:placeId/show/:id',
   authenticate(),
 
   async (req, res) => {
     const { params } = req;
     const viewBag = {};
 
-    viewBag.parkService = await ParkService.findOne({ where: { id: parseInt(params.id), companyId: parseInt(params.companyId) }, include: 'company' });
+    viewBag.parkService = await ParkService.findOne({ where: { id: parseInt(params.id), placeId: parseInt(params.placeId) }, include: 'company' });
     viewBag.user = await User.findByPk(req.user.id);
-    viewBag.parkServiceEditPath = `/parkservices/${params.companyId}/edit/${params.id}`;
-    viewBag.parkServiceDeletePath = `/parkservices/${params.companyId}/delete/${params.id}?_method=DELETE`;
+    viewBag.parkServiceEditPath = `/parkservices/${params.placeId}/edit/${params.id}`;
+    viewBag.parkServiceDeletePath = `/parkservices/${params.placeId}/delete/${params.id}?_method=DELETE`;
 
     res.render('./parkservices/show', viewBag);
   },
 );
 
 parkServiceRouter.get(
-  '/parkservices/:companyId/new',
+  '/parkservices/:placeId/new',
   authenticate(),
 
   async (req, res) => {
     const { params } = req;
     const viewBag = {};
 
-    viewBag.path = `/parkservices/${params.companyId}/create`;
+    viewBag.path = `/parkservices/${params.placeId}/create`;
     viewBag.parkService = {};
-    viewBag.company = { id: params.companyId };
+    viewBag.company = { id: params.placeId };
     viewBag.buttonLabel = 'Add';
 
     res.render('./parkservices/new', viewBag);
@@ -55,31 +71,31 @@ parkServiceRouter.get(
 );
 
 parkServiceRouter.post(
-  '/parkservices/:companyId/create',
+  '/parkservices/:placeId/create',
   authenticate(),
 
   async (req, res) => {
     const { params, body } = req;
 
     await ParkService.create({
-      name: body.name,
-      companyId: body.companyId,
+      placeId: body.placeId,
+      workId: body.workId,
     });
 
-    res.redirect(`/parkservices/${params.companyId}/index`);
+    res.redirect(`/parkservices/${params.placeId}/index`);
   },
 );
 
 parkServiceRouter.get(
-  '/parkservices/:companyId/edit/:id',
+  '/parkservices/:placeId/edit/:id',
   authenticate(),
 
   async (req, res) => {
     const { params } = req;
     const viewBag = {};
 
-    viewBag.path = `/parkservices/${params.companyId}/update/${params.id}?_method=PUT`;
-    viewBag.parkService = await ParkService.findOne({ where: { id: params.id, companyId: params.companyId }, include: 'company' });
+    viewBag.path = `/parkservices/${params.placeId}/update/${params.id}?_method=PUT`;
+    viewBag.parkService = await ParkService.findOne({ where: { id: params.id, placeId: params.placeId }, include: 'company' });
     viewBag.company = viewBag.parkService.company;
     viewBag.buttonLabel = 'Update';
 
@@ -88,7 +104,7 @@ parkServiceRouter.get(
 );
 
 parkServiceRouter.put(
-  '/parkservices/:companyId/update/:id',
+  '/parkservices/:placeId/update/:id',
   authenticate(),
 
   async (req, res) => {
@@ -96,23 +112,23 @@ parkServiceRouter.put(
 
     await ParkService.update(
       { name: body.name },
-      { where: { id: params.id, companyId: params.companyId } },
+      { where: { id: params.id, placeId: params.placeId } },
     );
 
-    res.redirect(`/parkservices/${params.companyId}/show/${params.id}`);
+    res.redirect(`/parkservices/${params.placeId}/show/${params.id}`);
   },
 );
 
 parkServiceRouter.delete(
-  '/parkservices/:companyId/delete/:id',
+  '/parkservices/:placeId/delete/:id',
   authenticate(),
 
   async (req, res) => {
     const { params, body } = req;
 
-    await ParkService.destroy({ where: { id: params.id, companyId: params.companyId } });
+    await ParkService.destroy({ where: { id: params.id, placeId: params.placeId } });
 
-    res.redirect(`/parkservices/${params.companyId}/index`);
+    res.redirect(`/parkservices/${params.placeId}/index`);
   },
 );
 
