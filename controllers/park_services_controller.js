@@ -1,5 +1,5 @@
 const { sequelize } = require('../db/database');
-const { ParkService, User, Park, Place, Technique, Company, Work } = require('../models/associate');
+const { ParkService, User, Park, Place, Technique, Company, Work, Schedule } = require('../models/associate');
 const { authenticate } = require('../services/authentication_service');
 const _ = require('underscore')
 
@@ -28,7 +28,7 @@ parkServiceRouter.get(
       where: { placeId:places },
       include: [
         'work',
-        'schedules',
+        'schedule',
         { model: Place, as: 'place', include: ['park', 'technique'] },
       ]
     });
@@ -49,11 +49,15 @@ parkServiceRouter.get(
 
     viewBag.parkService = await ParkService.findOne({
       where: { id: params.id, placeId: params.companyId },
-      include: [{ 
-        model: Place, as: 'place', include: [{
-          model: Park, as: 'park', include: 'company',
-        }]          
-      }]
+      include: [
+        'work',
+        'schedule',
+        {
+          model: Place, as: 'place', include: [{
+            model: Park, as: 'park', include: 'company',
+          }]          
+        }
+      ]
     });
 
     viewBag.user = await User.findByPk(user.id)
@@ -98,16 +102,13 @@ parkServiceRouter.post(
   async (req, res) => {
     const { params, body } = req;
 
-    debugger
-
     let parkservice = await ParkService.create({
       placeId: body.placeId,
       workId: body.workId,
     });
 
     parkservice.createSchedule({
-      startDate:Date.now(), 
-      endDate:Date.now(), 
+      date:body.date,       
       schedulableId: parkservice.id, 
       schedulableType: ParkService.name
     })
@@ -126,7 +127,12 @@ parkServiceRouter.get(
 
     viewBag.places = await Place.findAll({
       include: [
-        { model: Park, as: 'park', where: { companyId: params.companyId }, include: 'company' },
+        {
+          model: Park,
+          as: 'park', 
+          where: { companyId: params.companyId },
+          include: 'company'
+        },
       ]
     });
 
@@ -134,7 +140,19 @@ parkServiceRouter.get(
       include: [{ model: Company, as: 'company', where: {userId: req.user.id} }]
     });
     
-    viewBag.parkService = await ParkService.findOne({ where: { id: params.id, placeId: params.placeId }, include: 'company' });
+    viewBag.parkService = await ParkService.findOne(
+      { 
+        where: { id: params.id },
+        include: [
+          'schedule',
+          {
+            model: Work, as: 'work',
+            include: 'company'
+          }
+        ]
+      }
+    );
+
     viewBag.path = `/parkservices/${params.companyId}/update/${params.id}?_method=PUT`;
     viewBag.buttonLabel = 'Update';
 
@@ -152,22 +170,27 @@ parkServiceRouter.put(
     await ParkService.update(
       { name: body.name },
       { where: { id: params.id, placeId: params.placeId } },
-    );
+    );      
+
+    await Schedule.update(
+      { date:body.date },
+      { where:{ schedulableType:ParkService.name, schedulableId:params.id } }
+    )
 
     res.redirect(`/parkservices/${params.placeId}/show/${params.id}`);
   },
 );
 
 parkServiceRouter.delete(
-  '/parkservices/:placeId/delete/:id',
+  '/parkservices/:companyId/delete/:id',
   authenticate(),
 
   async (req, res) => {
     const { params, body } = req;
 
-    await ParkService.destroy({ where: { id: params.id, placeId: params.placeId } });
+    await ParkService.destroy({ where: { id: params.id } });
 
-    res.redirect(`/parkservices/${params.placeId}/index`);
+    res.redirect(`/parkservices/index`);
   },
 );
 

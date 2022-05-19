@@ -6,9 +6,9 @@ module.exports = (sequelize, DataTypes) => {
   class ParkService extends Model {
     static associate(models) {
       if (models.schedule) {
-        ParkService.hasMany(models.schedule, {
+        ParkService.hasOne(models.schedule, {
           foreignKey: 'schedulableId',
-          as: 'schedules',
+          as: 'schedule',
           onDelete: 'CASCADE',
           constraints: false,
           scope: {

@@ -15,11 +15,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      startDate: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
-      endDate: {
+      date: {
         type: Sequelize.DATE,
         allowNull: false,
       },

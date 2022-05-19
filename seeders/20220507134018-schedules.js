@@ -7,8 +7,7 @@ module.exports = {
     return queryInterface.bulkInsert('Schedules', [{
       schedulableId: parkService.id,
       schedulableType: ParkService.name,
-      startDate: new Date(2022, 6, 1),
-      endDate: new Date(2022, 6, 10),
+      date: new Date(2022, 6, 1),
 
       createdAt: new Date(),
       updatedAt: new Date(),

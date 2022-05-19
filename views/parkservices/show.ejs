@@ -1,7 +1,7 @@
-Work: <%= parkService.name %>
+Company: <%= parkService.place.park.company.name %> - <%= parkService.place.park.address %>
 <br>
 
-Company: <%= parkService.place.park.company.name %> - <%= parkService.place.park.address %>
+<%= parkService.work.name %> - <%= parkService.schedule.showFormat() %>
 <br>
 
 <% if(user.isCompanyOwner()) { %>

@@ -16,13 +16,13 @@
   </select>
   <br>
 
-  <label for="startDate">Start Date</label>
-  <input type="date" name="startDate" required>
+  <label for="date">Date</label>
+  <% if (parkService.schedule) { %>
+    <input type="datetime-local" id="date" name="date" value="<%= parkService.schedule.formFormat() %>" required>
+  <% } else { %>
+    <input type="datetime-local" id="date" name="date" required>
+  <% } %>
   <br>
-  
-  <label for="endDate">End Date</label>
-  <input type="date" name="startDate" required>
-  <br>  
 
   <button type="submit"><%= buttonLabel %></button>
 

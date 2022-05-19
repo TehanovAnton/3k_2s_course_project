@@ -2,6 +2,8 @@ const {
   Model,
 } = require('sequelize');
 
+const moment = require('moment')
+
 module.exports = (sequelize, DataTypes) => {
   class Schedule extends Model {
     static associate(models) {
@@ -13,12 +15,19 @@ module.exports = (sequelize, DataTypes) => {
         });
       }
     }
+
+    formFormat() {
+      return moment(this.date).format('YYYY-MM-DDTHH:MM')
+    }
+
+    showFormat() {
+      return moment(this.date).format('yyyy-mm-D hh:mm')
+    }
   }
   Schedule.init({
     schedulableId: DataTypes.INTEGER,
     schedulableType: DataTypes.STRING,
-    startDate: DataTypes.DATE,
-    endDate: DataTypes.DATE,
+    date: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'Schedule',

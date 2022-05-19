@@ -7,7 +7,7 @@ Park Services:
           <%= parkService.place.park.address %>: <%= parkService.place.technique.name %>: <%= parkService.work.name %> 
           <br>
 
-          Time: <%= parkService.schedules[0].startDate %> - <%= parkService.schedules[0].endDate %>
+          Date: <%= parkService.schedule.showFormat() %>
         </div>
       </a>
     </li>
