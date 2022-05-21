@@ -14,7 +14,10 @@ Comments:
 <div>
   <ul id="messages">
     <% work.comments.forEach(comment => { %>
-      <li><%= comment.author.nickname %>: <%= comment.message %></li>
+      <li>
+        <%= comment.author.nickname %>: <%= comment.message %>
+        <a href="<%= deleteCommentPath(work.id, comment.id) %>" >|del|</a>
+      </li>
     <% }) %>
   </ul>
   <br>

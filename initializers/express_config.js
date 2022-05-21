@@ -16,6 +16,7 @@ const techniqueRouter = require('../controllers/technique_controller');
 const parkServiceRouter = require('../controllers/park_services_controller');
 const worksRouter = require('../controllers/works_controller');
 const placesRouter = require('../controllers/places_controller');
+const commentsRouter = require('../controllers/comments_controller');
 const { authenticate } = require('../services/authentication_service');
 
 application.use(methodOverride('_method', { methods: ['POST', 'GET'] }));
@@ -44,6 +45,7 @@ application.use(techniqueRouter);
 application.use(parkServiceRouter);
 application.use(worksRouter);
 application.use(placesRouter);
+application.use(commentsRouter);
 
 application.get('/socket', 
   (req, res) => {

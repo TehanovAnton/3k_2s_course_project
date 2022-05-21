@@ -95,6 +95,7 @@ worksRouter.get(
     viewBag.editWorkPath = `/works/${viewBag.work.company.id}/edit/${viewBag.work.id}`;
     viewBag.deleteWorkPath = `/works/${viewBag.work.company.id}/delete/${viewBag.work.id}?_method=DELETE`;
     viewBag.workType = Work.name;
+    viewBag.deleteCommentPath = (workId, id) => `/comments/${workId}/delete/${id}?_method=DELETE`;
 
     res.render('./works/show', viewBag);
   },
