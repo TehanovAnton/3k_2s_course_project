@@ -1,7 +1,7 @@
 const { subject } = require('@casl/ability');
 const { AbilityBuilder, Ability } = require('@casl/ability');
 const _ = require('underscore');
-const { ParkService, User } = require('../models/associate');
+const { ParkService, User, Place, Technique, Park } = require('../models/associate');
 
 function authorize(abilityName, failureRedirect = 'back') {
   return async (req, res, next) => {
@@ -14,8 +14,24 @@ function authorize(abilityName, failureRedirect = 'back') {
 }
 
 async function parkServiceAuthorize(req, abilityName) {
-  const authUser = await User.findOne({ where: { id: req.user.id }, include: 'companies' });
-  const authUserCompaniesIds = _.map(authUser.companies, (company) => company.id);
+  const authUser = await User.findOne({ where: { id: req.user.id } });
+
+  const authUserPlacesIds = await Place.findAll({
+    attributes: ['id'],
+    include: [
+      { model:Technique, as:'technique', where:{ userId:authUser.id } }
+    ]
+  })
+  authUserPlacesIds = _.map(authUserPlacesIds, place => place.id )
+
+  const companyPlacesIds = await Place.findAll({
+    attributes: ['id'],
+    include: [
+      { model:Park, as:'park', where:{ companyId:req.params.companyId } }
+    ]
+  })
+  companyPlacesIds = _.map(companyPlacesIds, place => place.id )
+
   let park = subject('Park', { companyId: authUser.id });
 
   if (req.params.id) {
@@ -26,14 +42,13 @@ async function parkServiceAuthorize(req, abilityName) {
   return ability.can(abilityName, park);
 }
 
-let abilities = async (user, authUserCompaniesIds) => {
+let abilities = async (user, authUserPacesIds, companyPlacesIds) => {
   const { can, rules } = new AbilityBuilder(Ability);
 
   if (await user.isTechniqueOwner()) {
-    can('read_all', 'ParkSrvices');
-    can('read', 'ParkSrvices');
+    can('manage', 'ParkSrvices', { placeId: { $in: authUserPacesIds } });
   } else if (user.isCompanyOwner()) {
-    can('manage', 'ParkSrvices', { companyId: { $in: authUserCompaniesIds } });
+    can('read', 'ParkSrvices', { placeId: companyPlacesIds });
   }
 
   return new Ability(rules);

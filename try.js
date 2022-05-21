@@ -1,7 +1,7 @@
 const { sequelize, DataTypes } = require('./db/database');
 
 const {
-  Role, User, Technique, ParkService, Schedule, Park, Place
+  Role, User, Technique, ParkService, Schedule, Park, Place, Work, Comment, Company
 } = require('./models/associate');
 
 const destroyTechnique = async () => await Technique.destroy({ where: { id: 2 } });
@@ -42,6 +42,17 @@ const destroyParkService = async () => {
   console.log(await Schedule.findAll());
 }
 
-destroyParkService()
+const workAddComments = async () => {
+  work = await Work.findOne({ include: 'comments' })
+  user = await User.findOne()
+  await work.createComment({ message: 'test', commentableId: work.id, commentableType: Work.name, userId: user.id })
+
+  console.log(await Comment.findAll());
+  await work.destroy()
+
+  console.log(await Comment.findAll());
+}
+
+workAddComments()
 
 // console.log(application.get('env'));
