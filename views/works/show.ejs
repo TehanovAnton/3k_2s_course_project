@@ -8,3 +8,55 @@ Work: <%= work.name %>
   <a href="<%= editWorkPath %>">Edit</a>
   <a href="<%= deleteWorkPath %>">Delete</a>
 <% } %>
+<br>
+
+Comments:
+<div>
+  <ul id="messages">
+    <% work.comments.forEach(comment => { %>
+      <li><%= comment.author.nickname %>: <%= comment.message %></li>
+    <% }) %>
+  </ul>
+  <br>
+
+  <form name="commentsForm">
+    <input type="text" id="message" name="message">
+    <input type="hidden" id="userId" name="userId" value="<%= user.id %>" >
+    <input type="hidden" id="commentableId" name="commentableId" value="<%= work.id %>">
+    <input type="hidden" id="commentableType" name="commentableType" value="<%= workType %>">
+
+    <input type="submit" value="Add">
+  </form>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io()
+  
+  const commentsForm = document.forms.commentsForm
+  const messages = document.getElementById('messages')
+  const userId = document.getElementById('userId')  
+  const commentableId = document.getElementById('commentableId')
+  const commentableType = document.getElementById('commentableType')
+  const message = document.getElementById('message')
+
+  commentsForm.addEventListener('submit', e => {
+    e.preventDefault()
+
+    var comment = {
+      userId: userId.value,
+      commentableId: commentableId.value,
+      commentableType: commentableType.value,
+      message: message.value
+    }
+
+    socket.emit('comment', comment)
+    message.value = ''
+  })    
+
+  socket .on('comment_posted', (text) => {
+    const item = document.createElement('li')
+    item.innerText = text
+    messages.appendChild(item)
+  });
+</script>

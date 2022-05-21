@@ -11,7 +11,7 @@ const Schedule = require('./schedule')(sequelize, DataTypes);
 const Work = require('./work')(sequelize, DataTypes);
 const Comment = require('./comment')(sequelize, DataTypes);
 
-User.associate({ role: Role, technique: Technique, company: Company });
+User.associate({ role: Role, technique: Technique, company: Company, comment: Comment });
 Company.associate({ user: User, park: Park });
 Park.associate({ company: Company, place: Place });
 Technique.associate({ user: User, place: Place });
@@ -19,7 +19,7 @@ Place.associate({ park: Park, technique: Technique, parkService: ParkService });
 Work.associate({ company: Company, comment:Comment });
 ParkService.associate({ place: Place, work: Work, schedule: Schedule });
 Schedule.associate({ parkService: ParkService });
-Comment.associate({ work: Work });
+Comment.associate({ work: Work, user: User });
 
 module.exports = {
   Role, User, Company, Park, Technique, Place, ParkService, Schedule, Work, Comment

@@ -10,6 +10,8 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE',
         constraints: false,
       });
+
+      Comment.belongsTo(models.user, { as: 'author', foreignKey: 'userId' });
     }
   }
 

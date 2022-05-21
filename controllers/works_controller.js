@@ -1,4 +1,4 @@
-const { Company, Work, User } = require('../models/associate');
+const { Company, Work, User, Comment } = require('../models/associate');
 const { authenticate } = require('../services/authentication_service');
 const { authorize } = require('../abilities/works_abilities');
 const worksRouter = require('express').Router();
@@ -79,10 +79,22 @@ worksRouter.get(
     const viewBag = {};
 
     viewBag.user = await User.findByPk(req.user.id);
-    viewBag.work = await Work.findOne({ where: { id: params.id, companyId: params.companyId }, include: 'company' });
+
+    viewBag.work = await Work.findOne({
+      where: { 
+        id: params.id,
+        companyId: params.companyId
+      },
+      include: ['company', {
+        model: Comment,
+        as: 'comments',
+        include: 'author'        
+      }]});
+
     viewBag.userOwnCompany = await viewBag.user.hasCompany(viewBag.work.company);
     viewBag.editWorkPath = `/works/${viewBag.work.company.id}/edit/${viewBag.work.id}`;
     viewBag.deleteWorkPath = `/works/${viewBag.work.company.id}/delete/${viewBag.work.id}?_method=DELETE`;
+    viewBag.workType = Work.name;
 
     res.render('./works/show', viewBag);
   },

@@ -1,6 +1,6 @@
 require('dotenv').config();
 const session = require('express-session');
-const { express, application } = require('./express');
+const { express, application, appWithSockets } = require('./express');
 
 const cookieParser = require('cookie-parser')();
 const expressLayouts = require('express-ejs-layouts');
@@ -19,6 +19,7 @@ const placesRouter = require('../controllers/places_controller');
 const { authenticate } = require('../services/authentication_service');
 
 application.use(methodOverride('_method', { methods: ['POST', 'GET'] }));
+application.use(express.static(__dirname + '/public'))
 application.use(expressLayouts);
 application.set('view engine', 'ejs');
 application.set('views', './views');
@@ -44,6 +45,12 @@ application.use(parkServiceRouter);
 application.use(worksRouter);
 application.use(placesRouter);
 
+application.get('/socket', 
+  (req, res) => {
+    res.render("/home/anton/Desktop/Pskp_3k_2s/3k_2s_course_project/public" + '/client.ejs');
+  }
+)
+
 application.get(
   '/',
   authenticate(),
@@ -57,4 +64,4 @@ application.get(
   },
 );
 
-module.exports = application;
+module.exports = { application, appWithSockets };

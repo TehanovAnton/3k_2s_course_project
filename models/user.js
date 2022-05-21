@@ -12,6 +12,8 @@ module.exports = (sequelize, DataTypes) => {
       if (models.technique) User.hasMany(models.technique, { as: 'techniques', foreignKey: 'userId', onDelete: 'cascade' });
 
       if (models.company) User.hasMany(models.company, { as: 'companies', foreignKey: 'userId', onDelete: 'cascade' });
+
+      if (models.comment) User.hasMany(models.comment, { as: 'comments', foreignKey: 'userId', onDelete: 'cascade' });
     }
 
     async isCompanyOwner() {

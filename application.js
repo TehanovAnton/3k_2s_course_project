@@ -1,4 +1,4 @@
-const application = require('./initializers/express_config');
-
+const appWithSockets = require('./public/comments_server');
 const port = process.env.PORT || 5000;
-application.listen(port, () => { console.log(`application start:${port}`); });
+
+appWithSockets.listen(port, () => { console.log(`application start:${port}`); });

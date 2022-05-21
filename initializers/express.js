@@ -1,5 +1,6 @@
 const express = require('express');
+const application = express()
+const appWithSockets = require('http').createServer(application);
+const io = require('socket.io')(appWithSockets);
 
-const application = express();
-
-module.exports = { express, application };
+module.exports = { express, application, appWithSockets, io };
