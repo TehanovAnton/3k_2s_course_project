@@ -4,6 +4,8 @@ const {
   Role, User, Technique, ParkService, Schedule, Park, Place, Work, Comment, Company
 } = require('./models/associate');
 
+const nodemailer = require('nodemailer')
+
 const destroyTechnique = async () => await Technique.destroy({ where: { id: 2 } });
 
 const allParks = async () => { console.log(await Park.findOne({ include: 'company' })); };
@@ -53,6 +55,27 @@ const workAddComments = async () => {
   console.log(await Comment.findAll());
 }
 
-workAddComments()
+const sendMail = async () => {
+  let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    auth: {
+      user: "carserviceror@gmail.com",
+      pass: "ewqcxzxsw123",
+    },
+  }, {
+    from: 'carserviceror@gmail.com',
+  })
 
-// console.log(application.get('env'));
+  let info = await transporter.sendMail({
+    to: "tehanovanton@gmail.com",
+    subject: "hello cursach",
+    text: "Hello world?",
+    html: "<b>Hello cursach?</b>",
+  });
+
+  console.log("Message sent: %s", info.messageId);
+}
+
+sendMail()
