@@ -3,7 +3,10 @@
   <label for="placeId">Place - </label>
   <select name="placeId">
     <% places.forEach(place => { %>
-      <option value="<%= place.id %>"><%= place.park.company.name %>: <%= place.park.address %></option>
+      <option value="<%= place.id %>">
+        <%= place.park.company.name %>: <%= place.park.address %>|
+        technique: <%= place.technique.name %>
+      </option>
     <% }) %>
   </select>
   <br>

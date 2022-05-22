@@ -2,7 +2,6 @@ const { Park, User, Company } = require('../models/associate');
 const { authenticate } = require('../services/authentication_service');
 const { authorize } = require('../abilities/parks_ability');
 
-const Service = require('../services/service').Service(Park);
 const parksRouter = require('express').Router();
 
 parksRouter.get(

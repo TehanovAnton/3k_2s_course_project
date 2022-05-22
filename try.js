@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const { sequelize, DataTypes } = require('./db/database');
 
 const {
@@ -61,8 +63,8 @@ const sendMail = async () => {
     port: 587,
     secure: false,
     auth: {
-      user: "carserviceror@gmail.com",
-      pass: "ewqcxzxsw123",
+      user: process.env.MAILER_USERNAME,
+      pass: process.env.MAILER_PASSWORD,
     },
   }, {
     from: 'carserviceror@gmail.com',
