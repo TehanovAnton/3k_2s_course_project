@@ -16,7 +16,9 @@ Comments:
     <% work.comments.forEach(comment => { %>
       <li>
         <%= comment.author.nickname %>: <%= comment.message %>
-        <a href="<%= deleteCommentPath(work.id, comment.id) %>" >|del|</a>
+        <% if (user.hasComment(comment)) { %>
+          <a href="<%= deleteCommentPath(work.id, comment.id) %>" >|del|</a>
+        <% } %>
       </li>
     <% }) %>
   </ul>

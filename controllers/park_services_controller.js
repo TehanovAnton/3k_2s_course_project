@@ -1,6 +1,7 @@
 const { sequelize } = require('../db/database');
 const { ParkService, User, Park, Place, Technique, Company, Work, Schedule } = require('../models/associate');
 const { authenticate } = require('../services/authentication_service');
+const { parkServiceCreated } = require('../mailers/parkservices_mailer');
 const _ = require('underscore')
 
 const parkServiceRouter = require('express').Router();
@@ -48,7 +49,7 @@ parkServiceRouter.get(
     const viewBag = {};
 
     viewBag.parkService = await ParkService.findOne({
-      where: { id: params.id, placeId: params.companyId },
+      where: { id: params.id },
       include: [
         'work',
         'schedule',
@@ -84,7 +85,7 @@ parkServiceRouter.get(
     });
 
     viewBag.works = await Work.findAll({
-      include: [{ model: Company, as: 'company', where: {userId: req.user.id} }]
+      include: [{ model: Company, as: 'company', where:{ id: params.companyId } }]
     });
 
     viewBag.path = `/parkservices/${params.companyId}/create`;
@@ -100,18 +101,29 @@ parkServiceRouter.post(
   authenticate(),
 
   async (req, res) => {
-    const { params, body } = req;
+    const { user, params, body } = req;
 
     let parkservice = await ParkService.create({
       placeId: body.placeId,
       workId: body.workId,
     });
 
-    parkservice.createSchedule({
+    await parkservice.createSchedule({
       date:body.date,       
       schedulableId: parkservice.id, 
       schedulableType: ParkService.name
     })
+
+    parkservice = await ParkService.findOne({
+      where: { id: parkservice.id },
+      include: ['schedule', {
+        model: Place, as: 'place', include: ['park', 'technique']
+      }, {
+        model: Work, as: 'work', include: ['company']
+      }]
+    })
+
+    parkServiceCreated('New park service created', parkservice, user)
 
     res.redirect(`/parkservices/index`);
   },

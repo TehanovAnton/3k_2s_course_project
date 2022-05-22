@@ -42,6 +42,10 @@ module.exports = (sequelize, DataTypes) => {
 
       return !!userPlace
     }
+
+    hasComment(comment) {
+      return this.id == comment.userId;
+    }
   }
   User.init({
     nickname: DataTypes.STRING,
