@@ -16,7 +16,7 @@ function authorize(abilityName, failureRedirect = 'back') {
 async function parkAuthorize(req, abilityName) {
   const authUser = await User.findOne({ where: { id: req.user.id }, include: 'companies' });
   const authUserCompaniesIds = _.map(authUser.companies, (company) => company.id);
-  let park = subject('Park', { companyId: authUser.id });
+  let park = subject('Park', { companyId: parseInt(req.params.companyId) });
 
   if (req.params.id) {
     park = await Park.findOne({ where: { id: req.params.id } });
@@ -33,6 +33,7 @@ let abilities = async (user, authUserCompaniesIds) => {
     can('read_all', 'Park');
     can('read', 'Park');
   } else if (user.isCompanyOwner()) {
+    can('read_all', 'Park');
     can('manage', 'Park', { companyId: { $in: authUserCompaniesIds } });
     if (authUserCompaniesIds == 0) { can('manage', 'Park'); }
   }

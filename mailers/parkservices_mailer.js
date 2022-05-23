@@ -1,7 +1,6 @@
 const mailer = require('../initializers/nodemialer')
 
 async function parkServiceCreated(message, parkservice, user) {
-  debugger
 
   let info = await mailer.sendMail({
     to: user.email,

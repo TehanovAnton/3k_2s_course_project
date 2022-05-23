@@ -16,7 +16,7 @@ function authorize(abilityName, failureRedirect = 'back') {
 async function parkServiceAuthorize(req, abilityName) {
   const authUser = await User.findOne({ where: { id: req.user.id } });
 
-  const authUserPlacesIds = await Place.findAll({
+  var authUserPlacesIds = await Place.findAll({
     attributes: ['id'],
     include: [
       { model:Technique, as:'technique', where:{ userId:authUser.id } }
@@ -24,7 +24,7 @@ async function parkServiceAuthorize(req, abilityName) {
   })
   authUserPlacesIds = _.map(authUserPlacesIds, place => place.id )
 
-  const companyPlacesIds = await Place.findAll({
+  var companyPlacesIds = await Place.findAll({
     attributes: ['id'],
     include: [
       { model:Park, as:'park', where:{ companyId:req.params.companyId } }
@@ -32,23 +32,24 @@ async function parkServiceAuthorize(req, abilityName) {
   })
   companyPlacesIds = _.map(companyPlacesIds, place => place.id )
 
-  let park = subject('Park', { companyId: authUser.id });
+  let parkservice = subject('ParkService', { companyId: authUser.id });
 
   if (req.params.id) {
-    park = await Park.findOne({ where: { id: req.params.id } });
+    parkservice = await ParkService.findOne({ where: { id: req.params.id } });
   }
 
-  const ability = await abilities(authUser, authUserCompaniesIds);
-  return ability.can(abilityName, park);
+  const ability = await abilities(authUser, companyPlacesIds);
+  return ability.can(abilityName, parkservice);
 }
 
-let abilities = async (user, authUserPacesIds, companyPlacesIds) => {
+let abilities = async (user , authUserPacesIds, companyPlacesIds) => {
   const { can, rules } = new AbilityBuilder(Ability);
 
   if (await user.isTechniqueOwner()) {
-    can('manage', 'ParkSrvices', { placeId: { $in: authUserPacesIds } });
+    can('manage', 'ParkService', { placeId: { $in: authUserPacesIds } });
+    can('create', 'ParkService')
   } else if (user.isCompanyOwner()) {
-    can('read', 'ParkSrvices', { placeId: companyPlacesIds });
+    can('read', 'ParkSrvice', { placeId: companyPlacesIds });
   }
 
   return new Ability(rules);

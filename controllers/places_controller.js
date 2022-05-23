@@ -10,7 +10,7 @@ placesRouter.get(
 
   async (req, res) => {
     const { params } = req;
-    const viewBag = {}
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
 
     viewBag.places = await Place.findAll({ where:{ parkId:params.parkId }, include:['technique', 'park'] })
     viewBag.orderPlacePath = `/places/${params.parkId}/new`
@@ -27,7 +27,7 @@ placesRouter.get(
 
   async (req, res) => {
     const { params, user } = req;
-    const viewBag = {}
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
 
     viewBag.user = await User.findByPk(user.id)
     viewBag.place = await Place.findOne({ where:{ id:params.placeId }, include:['technique', 'park'] })
@@ -46,7 +46,7 @@ placesRouter.get(
 
   async (req, res) => {
     const { params, user } = req;
-    const viewBag = {}
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
 
     viewBag.park = await Park.findByPk(params.parkId)
     viewBag.techniques = await Technique.findAll({ where:{ userId:user.id } })
@@ -81,7 +81,7 @@ placesRouter.get(
 
   async (req, res) => {
     const { params, user } = req;
-    const viewBag = {}
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
 
     viewBag.park = await Park.findByPk(params.parkId)
     viewBag.techniques = await Technique.findAll({ where:{ userId:user.id } })

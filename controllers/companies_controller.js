@@ -1,4 +1,4 @@
-const { Company } = require('../models/associate');
+const { Company, User } = require('../models/associate');
 const { authenticate } = require('../services/authentication_service');
 const companiesRouter = require('express').Router();
 const { authorize } = require('../abilities/companies_abilities');
@@ -21,7 +21,11 @@ companiesRouter.get(
 
   async (req, res) => {
     const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
+
     viewBag.companies = await Company.findAll({ raw: true });
+
+    let user = await User.findByPk(req.user.id)
+    viewBag.companyOwner = await user.isCompanyOwner()
 
     res.render('./companies/index', viewBag);
   },

@@ -1,4 +1,6 @@
 
 <%- include('./partials/companies.ejs') %>
 
-<a href="/companies/new">Add company</a>
+<% if (companyOwner) { %> 
+  <a href="/companies/new">Add company</a>
+<% } %>

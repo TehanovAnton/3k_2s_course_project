@@ -103,7 +103,7 @@ techniqueRouter.put(
       { where: { id: req.params.id } },
     );
 
-    res.redirect(`/technique/${req.params.id}`);
+    res.redirect(`/technique/${req.params.id}/show`);
   },
 );
 

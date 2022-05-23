@@ -110,7 +110,7 @@ worksRouter.get(
     const { params } = req;
     const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
 
-    viewBag.work = await Work.findByPk(params.companyId);
+    viewBag.work = await Work.findByPk(params.id);
     viewBag.company = await Company.findByPk(params.companyId);
     viewBag.user = req.user;
     viewBag.path = `/works/${params.companyId}/update/${params.id}?_method=PUT`;

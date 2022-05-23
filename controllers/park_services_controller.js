@@ -1,6 +1,7 @@
 const { sequelize } = require('../db/database');
 const { ParkService, User, Park, Place, Technique, Company, Work, Schedule } = require('../models/associate');
 const { authenticate } = require('../services/authentication_service');
+const { authorize } = require('../abilities/park_services_abilities');
 const { parkServiceCreated } = require('../mailers/parkservices_mailer');
 const _ = require('underscore')
 
@@ -43,6 +44,7 @@ parkServiceRouter.get(
 parkServiceRouter.get(
   '/parkservices/:companyId/show/:id',
   authenticate(),
+  authorize('read'),
 
   async (req, res) => {
     const { params, user } = req;
@@ -72,6 +74,7 @@ parkServiceRouter.get(
 parkServiceRouter.get(
   '/parkservices/:companyId/new',
   authenticate(),
+  authorize('create'),
 
   async (req, res) => {
     const { params } = req;
@@ -99,6 +102,7 @@ parkServiceRouter.get(
 parkServiceRouter.post(
   '/parkservices/:companyId/create',
   authenticate(),
+  authorize('create'),
 
   async (req, res) => {
     const { user, params, body } = req;
@@ -132,6 +136,7 @@ parkServiceRouter.post(
 parkServiceRouter.get(
   '/parkservices/:companyId/edit/:id',
   authenticate(),
+  authorize('update'),
 
   async (req, res) => {
     const { params } = req;
@@ -175,6 +180,7 @@ parkServiceRouter.get(
 parkServiceRouter.put(
   '/parkservices/:placeId/update/:id',
   authenticate(),
+  authorize('update'),
 
   async (req, res) => {
     const { params, body } = req;
@@ -196,6 +202,7 @@ parkServiceRouter.put(
 parkServiceRouter.delete(
   '/parkservices/:companyId/delete/:id',
   authenticate(),
+  authorize('delete'),
 
   async (req, res) => {
     const { params, body } = req;
