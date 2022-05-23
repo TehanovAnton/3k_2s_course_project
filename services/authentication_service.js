@@ -8,7 +8,7 @@ function jwtSign(email, password, key) {
   return jwt.sign(
     { email, password },
     key,
-    { expiresIn: 10 * 60 },
+    { expiresIn: 30 * 60 },
   );
 }
 

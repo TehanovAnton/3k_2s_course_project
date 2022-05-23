@@ -7,7 +7,7 @@ companiesRouter.get(
   '/companies',
 
   async (req, res) => {
-    const viewBag = { authenticated: req.isAuthenticated() }
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
     viewBag.companies = await Company.findAll({ raw: true });
 
     res.json(viewBag.companies);
@@ -20,7 +20,7 @@ companiesRouter.get(
   authorize('read'),
 
   async (req, res) => {
-    const viewBag = { authenticated: req.isAuthenticated() }
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
     viewBag.companies = await Company.findAll({ raw: true });
 
     res.render('./companies/index', viewBag);
@@ -33,7 +33,7 @@ companiesRouter.get(
   authorize('create'),
 
   async (req, res) => {
-    const viewBag = { authenticated: req.isAuthenticated() }
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
     viewBag.path = '/companies/create';
     viewBag.method = 'POST';
     viewBag.company = {};
@@ -50,7 +50,7 @@ companiesRouter.get(
   authorize('read'),
 
   async (req, res) => {
-    const viewBag = { authenticated: req.isAuthenticated() }
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
 
     viewBag.user = req.user;
     viewBag.company = await Company.findOne({ where: { id: parseInt(req.params.id) }, raw: true });
@@ -88,7 +88,7 @@ companiesRouter.get(
   authorize('update'),
 
   async (req, res) => {
-    const viewBag = { authenticated: req.isAuthenticated() }
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
     viewBag.company = await Company.findOne({ where: { id: req.params.id }, raw: true });
     viewBag.path = `/companies/${viewBag.company.id}/update?_method=PUT`;
     viewBag.user = req.user;

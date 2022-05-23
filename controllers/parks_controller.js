@@ -11,7 +11,7 @@ parksRouter.get(
 
   async (req, res) => {
     const { params } = req;
-    const viewBag = { authenticated: req.isAuthenticated() }
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
     viewBag.parks = await Park.findAll({
       where: { companyId: parseInt(params.companyId) },
       include: 'company',
@@ -31,7 +31,7 @@ parksRouter.get(
 
   async (req, res) => {
     const { params } = req;
-    const viewBag = { authenticated: req.isAuthenticated() }
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
 
     viewBag.path = `/parks/${params.companyId}/create`;
     viewBag.buttonLabel = 'Create';
@@ -67,7 +67,7 @@ parksRouter.get(
 
   async (req, res) => {
     const { params } = req;
-    const viewBag = { authenticated: req.isAuthenticated() }
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
 
     viewBag.user = await User.findByPk(req.user.id);
     viewBag.userIsCompanyOwner = await viewBag.user.isCompanyOwner();
@@ -90,7 +90,7 @@ parksRouter.get(
 
   async (req, res) => {
     const { params } = req;
-    const viewBag = { authenticated: req.isAuthenticated() }
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
 
     viewBag.park = await Park.findOne({
       where: { id: parseInt(params.id), companyId: parseInt(params.companyId) },

@@ -1,0 +1,11 @@
+<form action="<%= path %>" method="post">
+  <label for="nickname">Nickname:</label>
+  <input type="text" id="nickname" name="nickname" value="<%= user.nickname %>" required/>
+  <br>  
+
+  <label for="email">Email:</label>
+  <input type="text" id="email" name="email" value="<%= user.email %>" required/>
+  <br>  
+
+  <button type="submit"><%= buttonLabel %></button>
+</form>

@@ -15,10 +15,64 @@ usersRouter.get(
   },
 );
 
+usersRouter.get(
+  '/users/:id/show',
+  authenticate(),
+
+  async (req, res) => {
+    const { params } = req;
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
+
+    viewBag.user = await User.findOne({ where: { id: params.id }, include:'role' });
+    viewBag.editUserPath = `/users/${params.id}/edit`;
+    viewBag.deleteUserPath = `/users/${params.id}/delete?_method=DELETE`;
+
+    res.render('./users/show', viewBag);
+  }
+)
+
+usersRouter.get(
+  '/users/:id/edit',
+  authenticate(),
+
+  async (req, res) => {
+    const { params } = req;
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
+
+    viewBag.user = await User.findOne({ where: { id: params.id }, include:'role' });
+    viewBag.path = `/users/${params.id}/update?_method=PUT`;
+    viewBag.buttonLabel = 'Update';
+
+    res.render('./users/edit', viewBag);
+  }
+)
+
+usersRouter.put(
+  '/users/:id/update',
+  bodyParser,
+  authenticate(),
+
+  async (req, res) => {
+    const { params, body } = req;
+
+    await User.update({
+      nickname: body.nickname,
+      email: body.email,
+    }, {
+      where: { id: params.id }
+    })
+
+    res.redirect(`/users/${params.id}/show`);
+  },
+);
+
+
+
 usersRouter.post(
   '/users/create',
   bodyParser,
   authorize('create'),
+
   async (req, res) => {
     const { body } = req;
     const role = await Role.findOne({ where: { title: body.role }, attributes: ['id'] });
@@ -30,52 +84,20 @@ usersRouter.post(
       roleId: role.id,
     }).catch((error) => { res.json(error); });
 
-    res.json(user);
-  },
-);
-
-usersRouter.put(
-  '/users/:id',
-  bodyParser,
-  authenticate(),
-  authorize('update'),
-  async (req, res) => {
-    const { body } = req;
-    const { params } = req;
-
-    const updates = userService.updateAttributes(body);
-    const result = await User.update(updates, {
-      where: { id: params.id },
-      returning: true,
-      plain: true,
-    })
-      .catch((error) => { res.json(error); });
-
-    const updatedUser = result[1];
-    if (updatedUser) res.json(updatedUser);
-    else res.json('user not found or not updated');
+    res.redirect('/');
   },
 );
 
 usersRouter.delete(
-  '/users/:id',
+  '/users/:id/delete',
   authenticate(),
-  authorize('delete'),
 
   async (req, res) => {
     const { params } = req;
+    debugger
+    await User.destroy({ where: { id: params.id } })
 
-    const user = await User.findByPk(params.id);
-    const result = await User.destroy(
-      {
-        where: { id: params.id },
-        returning: true,
-        plain: true,
-      },
-    ).catch((error) => { res.json(error); });
-
-    if (result) res.json(user);
-    else res.json('user not found');
+    res.redirect('/logout?_method=DELETE');
   },
 );
 

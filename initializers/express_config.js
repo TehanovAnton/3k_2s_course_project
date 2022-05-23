@@ -52,7 +52,7 @@ application.get(
   authenticate(),
 
   (req, res) => {
-    const viewBag = { authenticated: req.isAuthenticated() }
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
     viewBag.title = 'Home Page';
     viewBag.techniquePath = '/technique/index';
 

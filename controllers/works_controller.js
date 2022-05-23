@@ -7,7 +7,7 @@ worksRouter.get(
   '/works/:companyid',
 
   async (req, res) => {
-    const viewBag = { authenticated: req.isAuthenticated() }
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
     viewBag.companies = await Company.findAll({ raw: true });
 
     res.json(viewBag.companies);
@@ -21,7 +21,7 @@ worksRouter.get(
 
   async (req, res) => {
     const { params } = req;
-    const viewBag = { authenticated: req.isAuthenticated() }
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
 
     viewBag.works = await Work.findAll({ where: { companyId: params.companyId }, raw: true });
     viewBag.user = await User.findByPk(req.user.id);
@@ -40,7 +40,7 @@ worksRouter.get(
 
   async (req, res) => {
     const { params } = req;
-    const viewBag = { authenticated: req.isAuthenticated() }
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
 
     viewBag.path = `/works/${params.companyId}/create`;
     viewBag.work = {};
@@ -76,7 +76,7 @@ worksRouter.get(
 
   async (req, res) => {
     const { params } = req;
-    const viewBag = { authenticated: req.isAuthenticated() }
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
 
     viewBag.user = await User.findByPk(req.user.id);
 
@@ -108,7 +108,7 @@ worksRouter.get(
 
   async (req, res) => {
     const { params } = req;
-    const viewBag = { authenticated: req.isAuthenticated() }
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
 
     viewBag.work = await Work.findByPk(params.companyId);
     viewBag.company = await Company.findByPk(params.companyId);

@@ -17,7 +17,7 @@ techniqueRouter.get(
   authorize('read'),
 
   async (req, res) => {
-    const viewBag = { authenticated: req.isAuthenticated() }
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
     viewBag.technique = await Technique.findAll({ where: { userId: req.user.id }, raw: true });
 
     res.render('./technique/index', viewBag);
@@ -29,7 +29,7 @@ techniqueRouter.get(
   authenticate(),
   authorize('create'),
   async (req, res) => {
-    const viewBag = { authenticated: req.isAuthenticated() }
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
     viewBag.user = req.user;
     viewBag.techniqueNewPath = '/technique/create';
     viewBag.method = 'POST';
@@ -62,7 +62,7 @@ techniqueRouter.get(
   authorize('read'),
 
   async (req, res) => {
-    const viewBag = { authenticated: req.isAuthenticated() }
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
     viewBag.technique = await Technique.findOne({ where: { id: parseInt(req.params.id) }, raw: true });
     viewBag.techniqueEditPath = `/technique/${req.params.id}/edit`;
     viewBag.techniqueDeletePath = `/technique/${req.params.id}/delete?_method=DELETE`;
@@ -77,7 +77,7 @@ techniqueRouter.get(
   authorize('update'),
 
   async (req, res) => {
-    const viewBag = { authenticated: req.isAuthenticated() }
+    const viewBag = { authenticated: req.isAuthenticated(), showUserPath: `/users/${req.user.id}/show` }
 
     viewBag.technique = await Technique.findOne({ where: { id: req.params.id }, raw: true });
     viewBag.techniqueUpdatePath = `/technique/${viewBag.technique.id}/update/?_method=PUT`;
