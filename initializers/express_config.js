@@ -37,7 +37,7 @@ application.use(session({
 application.use(passport.authenticate('session'));
 
 application.use(rolesRouter);
-application.use(usersRouter);
+application.use(usersRouter); 
 application.use(companiesRouter);
 application.use(parksRouter);
 application.use(authenticationRouter);
@@ -47,18 +47,12 @@ application.use(worksRouter);
 application.use(placesRouter);
 application.use(commentsRouter);
 
-application.get('/socket', 
-  (req, res) => {
-    res.render("/home/anton/Desktop/Pskp_3k_2s/3k_2s_course_project/public" + '/client.ejs');
-  }
-)
-
 application.get(
   '/',
   authenticate(),
 
   (req, res) => {
-    const viewBag = {};
+    const viewBag = { authenticated: req.isAuthenticated() }
     viewBag.title = 'Home Page';
     viewBag.techniquePath = '/technique/index';
 

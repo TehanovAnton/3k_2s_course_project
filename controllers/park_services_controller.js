@@ -12,7 +12,7 @@ parkServiceRouter.get(
 
   async (req, res) => {
     const { user, params } = req;
-    const viewBag = {};
+    const viewBag = { authenticated: req.isAuthenticated() }
 
     let places = await Place.findAll({
       attributes: ['id'],
@@ -46,7 +46,7 @@ parkServiceRouter.get(
 
   async (req, res) => {
     const { params, user } = req;
-    const viewBag = {};
+    const viewBag = { authenticated: req.isAuthenticated() }
 
     viewBag.parkService = await ParkService.findOne({
       where: { id: params.id },
@@ -75,7 +75,7 @@ parkServiceRouter.get(
 
   async (req, res) => {
     const { params } = req;
-    const viewBag = {};
+    const viewBag = { authenticated: req.isAuthenticated() }
 
     viewBag.places = await Place.findAll({
       include: [
@@ -135,7 +135,7 @@ parkServiceRouter.get(
 
   async (req, res) => {
     const { params } = req;
-    const viewBag = {};
+    const viewBag = { authenticated: req.isAuthenticated() }
 
     viewBag.places = await Place.findAll({
       include: [

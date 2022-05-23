@@ -1,13 +1,15 @@
 <header>
-  <a href="/technique/index">Technique</a>
-  ,
-  <a href="/companies/index">Companies</a>
-  ,
-  <a href="/parkservices/index">Ordered park services</a>
-  ,
-  <a href="/signup">Sign Up</a>
-  ,
-  <a href="/login">Log In</a>
-  ,
-  <a href="/logout?_method=delete">Log Out</a>
+  <% if (authenticated) { %>
+    <a href="/technique/index">Technique</a>
+    ,
+    <a href="/companies/index">Companies</a>
+    ,
+    <a href="/parkservices/index">Ordered park services</a>
+    ,
+    <a href="/logout?_method=delete">Log Out</a>
+  <% } else { %>
+    <a href="/signup">Sign Up</a>
+    ,
+    <a href="/login">Log In</a>
+  <% } %>
 </header>;

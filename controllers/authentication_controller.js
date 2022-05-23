@@ -9,7 +9,7 @@ const {
 authenticationRouter.get(
   '/signup',
   (req, res) => {
-    const viewBag = {};
+    const viewBag = { authenticated: req.isAuthenticated() }
     viewBag.createUserPath = '/users/create';
 
     res.render('./authentication/signup', viewBag);
@@ -19,7 +19,7 @@ authenticationRouter.get(
 authenticationRouter.get(
   '/login',
   (req, res) => {
-    const viewBag = {};
+    const viewBag = { authenticated: req.isAuthenticated() }
     viewBag.loginUserPath = '/login';
 
     res.render('./authentication/login', viewBag);
