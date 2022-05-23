@@ -1,12 +1,6 @@
 const { subject } = require('@casl/ability');
 const { AbilityBuilder, Ability } = require('@casl/ability');
-const roles = require('./roles');
-const { sequelize, DataTypes } = require('../db/database');
-
-const User = require('../models/user')(sequelize, DataTypes);
-const Role = require('../models/role')(sequelize, DataTypes);
-
-User.associate({ role: Role });
+const { User, Role } = require('../models/associate')
 
 function authorize(abilityName, failureRedirect = 'back') {
   return async (req, res, next) => {
@@ -36,12 +30,10 @@ let abilities = async (user, authUserId) => {
 
   if (!authUserId) {
     can('create');
-  } else if (await user.isCompanyOwner()) {
+  } else {
     can('read', 'User', { id: authUserId });
     can('delete', 'User', { id: authUserId });
     can('update', 'User', { id: authUserId });
-  } else if (await user.isTechniqueOwner()) {
-    can('read', 'User', { id: authUserId });
   }
 
   return new Ability(rules);

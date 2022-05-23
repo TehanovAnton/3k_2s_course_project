@@ -6,7 +6,7 @@ const { Park, User } = require('../models/associate');
 function authorize(abilityName, failureRedirect = 'back') {
   return async (req, res, next) => {
     if (await parkAuthorize(req, abilityName)) {
-      next();
+      return next();
     } else {
       res.redirect(failureRedirect);
     }

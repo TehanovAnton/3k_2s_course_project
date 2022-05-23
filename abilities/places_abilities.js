@@ -6,7 +6,7 @@ const { Place, User, Technique } = require('../models/associate');
 function authorize(abilityName, failureRedirect = 'back') {
   return async (req, res, next) => {
     if (await placeAuthorise(req, abilityName)) {
-      next();
+      return next();
     } else {
       res.redirect(failureRedirect);
     }

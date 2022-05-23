@@ -18,6 +18,7 @@ usersRouter.get(
 usersRouter.get(
   '/users/:id/show',
   authenticate(),
+  authorize('read'),
 
   async (req, res) => {
     const { params } = req;
@@ -34,6 +35,7 @@ usersRouter.get(
 usersRouter.get(
   '/users/:id/edit',
   authenticate(),
+  authorize('update'),
 
   async (req, res) => {
     const { params } = req;
@@ -51,6 +53,7 @@ usersRouter.put(
   '/users/:id/update',
   bodyParser,
   authenticate(),
+  authorize('update'),
 
   async (req, res) => {
     const { params, body } = req;
@@ -82,15 +85,16 @@ usersRouter.post(
       email: body.email,
       password: body.password,
       roleId: role.id,
-    }).catch((error) => { res.json(error); });
+    })
 
-    res.redirect('/');
+    res.redirect('/login');
   },
 );
 
 usersRouter.delete(
   '/users/:id/delete',
   authenticate(),
+  authorize('delete'),
 
   async (req, res) => {
     const { params } = req;

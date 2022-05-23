@@ -4,11 +4,17 @@ const roles = require('./roles');
 const { Technique, User } = require('../models/associate');
 const { Company } = require('../services/company_service');
 
-function authorize(abilityName) {
-  return (req, res, next) => companyAuthorise(req, res, next, abilityName);
+function authorize(abilityName, failureRedirect = 'back') {
+  return async (req, res, next) => {
+    if (await companyAuthorise(req, abilityName)) {
+      return next();
+    } else {
+      res.redirect(failureRedirect);
+    }
+  };
 }
 
-async function companyAuthorise(req, res, next, abilityName) {
+async function companyAuthorise(req, abilityName) {
   const authUser = await User.findOne({ where: { id: req.user.id }, include: 'role' });
   let company = subject('Company', { userId: authUser.id });
   const { params } = req;
@@ -18,11 +24,7 @@ async function companyAuthorise(req, res, next, abilityName) {
   }
 
   const ability = await abilities(authUser, authUser.id);
-  if (ability.can(abilityName, company)) {
-    return next();
-  }
-
-  res.send('permission denied');
+  return ability.can(abilityName, company)
 }
 
 let abilities = async (user, authUserId) => {

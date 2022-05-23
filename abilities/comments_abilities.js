@@ -3,11 +3,17 @@ const { AbilityBuilder, Ability } = require('@casl/ability');
 const roles = require('./roles');
 const { Comment, User } = require('../models/associate');
 
-function authorize(abilityName) {
-  return (req, res, next) => commentAuthorise(req, res, next, abilityName);
+function authorize(abilityName, failureRedirect = 'back') {
+  return async (req, res, next) => {
+    if (await commentAuthorise(req, abilityName)) {
+      return next();
+    } else {
+      res.redirect(failureRedirect);
+    }
+  };
 }
 
-async function commentAuthorise(req, res, next, abilityName) {
+async function commentAuthorise(req, abilityName) {
   const authUser = await User.findOne({ where: { id: req.user.id }, include: 'role' });
   let comment = subject('Comment', { userId: authUser.id });
   const { params } = req;
@@ -17,11 +23,7 @@ async function commentAuthorise(req, res, next, abilityName) {
   }
   
   const ability = await abilities(authUser, comment);
-  if (ability.can(abilityName, comment)) {
-    return next();
-  }
-
-  res.send('permission denied');
+  return ability.can(abilityName, comment)
 }
 
 let abilities = async (user, comment) => {

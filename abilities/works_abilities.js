@@ -6,7 +6,7 @@ const _ =require('underscore')
 function authorize(abilityName, failureRedirect = 'back') {
   return async (req, res, next) => {
     if (await workAuthorize(req, abilityName)) {
-      next();
+      return next();
     } else {
       res.redirect(failureRedirect);
     }

@@ -6,7 +6,7 @@ const { ParkService, User, Place, Technique, Park } = require('../models/associa
 function authorize(abilityName, failureRedirect = 'back') {
   return async (req, res, next) => {
     if (await parkServiceAuthorize(req, abilityName)) {
-      next();
+      return next();
     } else {
       res.redirect(failureRedirect);
     }
